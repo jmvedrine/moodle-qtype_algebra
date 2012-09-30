@@ -217,11 +217,10 @@ class qtype_algebra_question extends question_graded_by_strategy
 	 * @return boolean true if the response matches the answer, false otherwise
 	 */
 	function test_response_by_sage($response, $answer) {
-		// TODO: Store server information in the Moodle configuration
 		$request=array(
-					   'host'   => 'localhost',
-					   'port'   => 7777,
-					   'uri'    => ''
+					   'host'   => $CFG->qtype_algebra_host,
+					   'port'   => $CFG->qtype_algebra_port,
+					   'uri'    => $CFG->qtype_algebra_uri,
 		);
 		// Sets the name of the method to call to full_symbolic_compare
 		$request['method']='full_symbolic_compare';

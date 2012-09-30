@@ -29,15 +29,16 @@ $string['compareby_help'] = 'This selects the method by which the students\' res
 to all the questions answers. The different possibilities are:
 
 SAGE: uses the Open Source <a href="http://www.sagemath.org/">SAGE</a>
-mathematics software to perform a full symbolic algebraic comparison. 
+mathematics software to perform a full symbolic algebraic comparison.
 
 Evaluation: This method generates random numbers for
 the question variables and then evaluates both the student response and the
 question\'s answer for that set of values.
 
-Equivalence: 
+Equivalence:
 This is the simplest of all the methods. It will only perform the most basic of
 comparisons between expressions.';
+$string['defaultmethod'] = 'Default comparison method';
 $string['compareby'] = 'Comparison Algorithm';
 $string['comparesage'] = 'SAGE';
 $string['compareeval'] = 'Evaluation';

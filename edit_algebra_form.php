@@ -12,7 +12,7 @@
 require_once($CFG->dirroot . '/question/type/edit_question_form.php');
 require_once($CFG->dirroot . '/question/type/algebra/questiontype.php');
 require_once($CFG->dirroot . '/question/type/algebra/parser.php');
-    
+
 // Override the default number of answers and the number to add to avoid clutter.
 // Algebra questions will likely not have huge number of different answers...
 define("SYMB_QUESTION_NUMANS_START", 2);
@@ -33,17 +33,17 @@ class qtype_algebra_edit_form extends question_edit_form {
      * @param MoodleQuickForm $mform the form being built.
      */
     protected function definition_inner($mform) {
-		// Add the select control which will select the comparison type to use
-        $mform->addElement('select', 'compareby', get_string('compareby','qtype_algebra'), 
-						   array( "sage"  => get_string('comparesage', 'qtype_algebra'),
-								  "eval"  => get_string('compareeval', 'qtype_algebra'),
-								  "equiv" => get_string('compareequiv','qtype_algebra')
-								 ));
+        global $CFG;
+        // Add the select control which will select the comparison type to use
+        $mform->addElement('select', 'compareby', get_string('compareby','qtype_algebra'),
+                           array( "sage"  => get_string('comparesage', 'qtype_algebra'),
+                                  "eval"  => get_string('compareeval', 'qtype_algebra'),
+                                  "equiv" => get_string('compareequiv','qtype_algebra')
+                                 ));
         $mform->addHelpButton('compareby', 'compareby', 'qtype_algebra');
-		$mform->setDefault('compareby','eval');
-		
+        $mform->setDefault('compareby',$CFG->qtype_algebra_method);
 
-		// Add the control to select the number of checks to perform
+        // Add the control to select the number of checks to perform
         // First create an array with all the allowed values. We will then use this array
         // with the array_combine function to create a single array where the keys are the
         // same as the array values
@@ -51,29 +51,29 @@ class qtype_algebra_edit_form extends question_edit_form {
                           '10',  '20',  '30',  '50',  '70',
                          '100', '200', '300', '500', '700', '1000');
         // Add the select element using the array_combine method discussed above
-        $mform->addElement('select', 'nchecks', get_string('nchecks','qtype_algebra'), 
+        $mform->addElement('select', 'nchecks', get_string('nchecks','qtype_algebra'),
                             array_combine($chk_array,$chk_array));
         $mform->addHelpButton('nchecks', 'nchecks', 'qtype_algebra');
-		// Set the default number of checks to perform
+        // Set the default number of checks to perform
         $mform->setDefault('nchecks','10');
-		
+
 
         // Add the box to set the tolerance to use when performing evaluation checks
         $mform->addElement('text', 'tolerance', get_string('tolerance','qtype_algebra'));
-		$mform->addHelpButton('tolerance', 'tolerance', 'qtype_algebra');
+        $mform->addHelpButton('tolerance', 'tolerance', 'qtype_algebra');
         $mform->setType('tolerance', PARAM_NUMBER);
         $mform->setDefault('tolerance','0.001');
-        
+
         // Add an entry for the answer box prefix
         $mform->addElement('text', 'answerprefix', get_string('answerprefix','qtype_algebra'),array('size'=>55));
-		$mform->addHelpButton('answerprefix', 'answerprefix', 'qtype_algebra');
+        $mform->addHelpButton('answerprefix', 'answerprefix', 'qtype_algebra');
         $mform->setType('answerprefix', PARAM_RAW);
-        
+
         // Add an entry for a disallowed expression
         $mform->addElement('text', 'disallow', get_string('disallow','qtype_algebra'),array('size'=>55));
-		$mform->addHelpButton('disallow', 'disallow', 'qtype_algebra');
+        $mform->addHelpButton('disallow', 'disallow', 'qtype_algebra');
         $mform->setType('disallow', PARAM_RAW);
-        
+
         // Create an array which will store the function checkboxes
         $func_group=array();
         // Create an array to add spacers between the boxes
@@ -90,50 +90,50 @@ class qtype_algebra_edit_form extends question_edit_form {
                 $spacers[]=str_repeat('&nbsp;',8-strlen($func));
             }
         }
-		// Create and add the group of function controls to the form
+        // Create and add the group of function controls to the form
         $mform->addGroup($func_group,'allowedfuncs',get_string('allowedfuncs','qtype_algebra'),$spacers,true);
-		$mform->addHelpButton('allowedfuncs', 'allowedfuncs', 'qtype_algebra');
+        $mform->addHelpButton('allowedfuncs', 'allowedfuncs', 'qtype_algebra');
         $mform->disabledIf('allowedfuncs','allowedfuncs[all]','checked');
         $mform->setDefault('allowedfuncs[all]','checked');
-        
-		$mform->addElement('static', 'variablesinstruct',
+
+        $mform->addElement('static', 'variablesinstruct',
                 get_string('variables', 'qtype_algebra'),
                 get_string('filloutonevariable', 'qtype_algebra'));
-		$mform->closeHeaderBefore('variablesinstruct');
-		// Create the array for the list of variables used in the question
-		$repeated=array();
-		// Create the array for the list of repeated options used by the variable subforms
+        $mform->closeHeaderBefore('variablesinstruct');
+        // Create the array for the list of variables used in the question
+        $repeated=array();
+        // Create the array for the list of repeated options used by the variable subforms
         $repeatedoptions = array();
-		
-		// Add the form elements to enter the variables
+
+        // Add the form elements to enter the variables
         $repeated[] =& $mform->createElement('header','variablehdr',get_string('variableno','qtype_algebra','{no}'));
         //$repeatedoptions['variablehdr']['helpbutton'] = array('variable',get_string('variable','qtype_algebra'),
         //                                                      'qtype_algebra');
-		$repeated[] =& $mform->createElement('text','variable',get_string('variablename','qtype_algebra'),array('size'=>20));
+        $repeated[] =& $mform->createElement('text','variable',get_string('variablename','qtype_algebra'),array('size'=>20));
         $mform->setType('variable', PARAM_RAW);
-		$repeated[] =& $mform->createElement('text','varmin',get_string('varmin','qtype_algebra'),array('size'=>20));
-		$mform->setType('varmin', PARAM_RAW);
+        $repeated[] =& $mform->createElement('text','varmin',get_string('varmin','qtype_algebra'),array('size'=>20));
+        $mform->setType('varmin', PARAM_RAW);
         $repeatedoptions['varmin']['default'] = '';
-		$repeated[] =& $mform->createElement('text','varmax',get_string('varmax','qtype_algebra'),array('size'=>20));
-		$mform->setType('varmax', PARAM_RAW);
+        $repeated[] =& $mform->createElement('text','varmax',get_string('varmax','qtype_algebra'),array('size'=>20));
+        $mform->setType('varmax', PARAM_RAW);
         $repeatedoptions['varmax']['default'] = '';
 
-		// Get the current number of variables defined, if any
-		if (isset($this->question->options)) {
+        // Get the current number of variables defined, if any
+        if (isset($this->question->options)) {
             $countvars = count($this->question->options->variables);
         } else {
             $countvars = 0;
         }
-		// Come up with the number of variable entries to add to the form at the start
+        // Come up with the number of variable entries to add to the form at the start
         if ($this->question->formoptions->repeatelements){
             $repeatsatstart = (SYMB_QUESTION_NUMVAR_START > ($countvars + SYMB_QUESTION_NUMVAR_ADD))?
-			SYMB_QUESTION_NUMVAR_START : ($countvars + SYMB_QUESTION_NUMVAR_ADD);
+            SYMB_QUESTION_NUMVAR_START : ($countvars + SYMB_QUESTION_NUMVAR_ADD);
         } else {
             $repeatsatstart = $countvars;
         }
         $this->repeat_elements($repeated, $repeatsatstart, $repeatedoptions, 'novariables', 'addvariables',
-							   SYMB_QUESTION_NUMVAR_ADD, get_string('addmorevariableblanks', 'qtype_algebra'));
-        
+                               SYMB_QUESTION_NUMVAR_ADD, get_string('addmorevariableblanks', 'qtype_algebra'));
+
         $mform->addElement('static', 'answersinstruct',
                 get_string('correctanswers', 'qtype_algebra'),
                 get_string('filloutoneanswer', 'qtype_algebra'));
@@ -146,55 +146,55 @@ class qtype_algebra_edit_form extends question_edit_form {
 
     }
 
-	protected function data_preprocessing($question) {
+    protected function data_preprocessing($question) {
         $question = parent::data_preprocessing($question);
         $question = $this->data_preprocessing_answers($question);
         $question = $this->data_preprocessing_hints($question);
 
         if (!empty($question->options)) {
             $question->compareby = $question->options->compareby;
-			$question->nchecks = $question->options->nchecks;
-			$question->tolerance = $question->options->tolerance;
-			$question->allowedfuncs = $question->options->allowedfuncs;
-			$question->disallow = $question->options->disallow;
-			$question->answerprefix = $question->options->answerprefix;
+            $question->nchecks = $question->options->nchecks;
+            $question->tolerance = $question->options->tolerance;
+            $question->allowedfuncs = $question->options->allowedfuncs;
+            $question->disallow = $question->options->disallow;
+            $question->answerprefix = $question->options->answerprefix;
         }
 
         return $question;
     }
     /**
      * Sets the existing values into the form for the question specific data.
-	 *
-	 * This method copies the data from the existing database record into the form fields as default
-	 * values for the various elements.
+     *
+     * This method copies the data from the existing database record into the form fields as default
+     * values for the various elements.
      *
      * @param $question the question object from the database being used to fill the form
      */
     function set_data($question) {
-		// Check to see if there are any existing question options, if not then just call
-		// the base class set data method and exit
+        // Check to see if there are any existing question options, if not then just call
+        // the base class set data method and exit
         if (!isset($question->options)) {
-			return parent::set_data($question);
-		}
-		
-		// Now we do exactly the same for the variables...
-		$vars = $question->options->variables;
-		// If we found any variables then loop over them using a numerical key to provide an index
-		// to the arrays we need to access in the form
-		if (count($vars)) {
-			$key = 0;
-			foreach ($vars as $var) {
-				// For every variable set the default values
-				$default_values['variable['.$key.']'] = $var->name;
-				// Only set the min and max defaults if this variable has a range
-				if($var->min!='') {
-					$default_values['varmin['.$key.']'] = $var->min;
-					$default_values['varmax['.$key.']'] = $var->max;
-				}
-				$key++;
-			}
-		}
-		        
+            return parent::set_data($question);
+        }
+
+        // Now we do exactly the same for the variables...
+        $vars = $question->options->variables;
+        // If we found any variables then loop over them using a numerical key to provide an index
+        // to the arrays we need to access in the form
+        if (count($vars)) {
+            $key = 0;
+            foreach ($vars as $var) {
+                // For every variable set the default values
+                $default_values['variable['.$key.']'] = $var->name;
+                // Only set the min and max defaults if this variable has a range
+                if($var->min!='') {
+                    $default_values['varmin['.$key.']'] = $var->min;
+                    $default_values['varmax['.$key.']'] = $var->max;
+                }
+                $key++;
+            }
+        }
+
         // Add the default values for the allowed functions controls
         // First check to see if there are any allowed functions defined
         if(count($question->options->allowedfuncs)>0) {
@@ -215,40 +215,40 @@ class qtype_algebra_edit_form extends question_edit_form {
         else {
             $default_values['allowedfuncs[all]']=1;
         }
-        
-		// Add the default values to the question object in a form which the parent 
-		// set data method will be able to use to find the default values
-		$question = (object)((array)$question + $default_values);
-		
-		// Finally call the parent set data method to handle everything else
+
+        // Add the default values to the question object in a form which the parent
+        // set data method will be able to use to find the default values
+        $question = (object)((array)$question + $default_values);
+
+        // Finally call the parent set data method to handle everything else
         parent::set_data($question);
     }
-	
+
     /**
      * Validates the form data ensuring there are no obvious errors in the submitted data.
-	 *
-	 * This method performs some basic sanity checks on the form data before it gets converted
-	 * into a database record.
+     *
+     * This method performs some basic sanity checks on the form data before it gets converted
+     * into a database record.
      *
      * @param $data the data from the form which needs to be checked
-	 * @param $files some files - I don't know what this is for! - files defined in the form??
+     * @param $files some files - I don't know what this is for! - files defined in the form??
      */
     public function validation($data, $files) {
-		// Call the base class validation method and keep any errors it generates
+        // Call the base class validation method and keep any errors it generates
         $errors = parent::validation($data, $files);
-		
+
         // Regular expression string to match a number
         $renumber='/([+-]*(([0-9]+\.[0-9]*)|([0-9]+)|(\.[0-9]+))|'.
             '(([0-9]+\.[0-9]*)|([0-9]+)|(\.[0-9]+))E([-+]?\d+))/A';
-        
-		// Perform sanity checks on the variables.
+
+        // Perform sanity checks on the variables.
         $vars = $data['variable'];
         // Create an array of defined variables
         $varlist=array();
         foreach ($vars as $key => $var) {
             $trimvar = trim($var);
-			$trimmin = trim($data['varmin'][$key]);
-			$trimmax = trim($data['varmax'][$key]);
+            $trimmin = trim($data['varmin'][$key]);
+            $trimmax = trim($data['varmax'][$key]);
             // Check that there is a valid variable name otherwise skip
             if ($trimvar == '') {
                 continue;
@@ -294,7 +294,7 @@ class qtype_algebra_edit_form extends question_edit_form {
             $errors['variable[0]'] = get_string('notenoughvars', 'qtype_algebra');
         }
 
-		// Now perform the sanity checks on the answers
+        // Now perform the sanity checks on the answers
         // Create a parser which we will use to check that the answers are understandable
         $p = new qtype_algebra_parser;
         $answers = $data['answer'];
@@ -321,7 +321,7 @@ class qtype_algebra_edit_form extends question_edit_form {
                 // Do this by looking for a non-empty array to be returned from the array_diff
                 // between the list of all declared variables and the variables in this answer
                 if($d=array_diff($tmpvars,$varlist)) {
-                    $errors['answer['.$key.']'] = get_string('undefinedvar','qtype_algebra',"'".implode("', '",$d)."'");                    
+                    $errors['answer['.$key.']'] = get_string('undefinedvar','qtype_algebra',"'".implode("', '",$d)."'");
                 }
                 // Do the same for functions which we did for variables
                 $ansfuncs=array_merge($ansfuncs,array_diff($expr->get_functions(),$ansfuncs));
@@ -349,7 +349,7 @@ class qtype_algebra_edit_form extends question_edit_form {
         if ($maxgrade == false) {
             $errors['fraction[0]'] = get_string('fractionsnomax', 'question');
         }
-		        
+
         // Check for variables which are defined but never used.
         // Do this by looking for a non-empty array to be returned from array_diff.
         if($d=array_diff($varlist,$ansvars)) {
@@ -362,17 +362,16 @@ class qtype_algebra_edit_form extends question_edit_form {
                 }
             }
         }
-        
+
         // Check that the tolerance is greater than or equal to zero
         if($data['tolerance']<0) {
             $errors['tolerance']=get_string('toleranceltzero','qtype_algebra');
         }
-        
+
         return $errors;
     }
-	
+
     public function qtype() {
         return 'algebra';
     }
 }
-

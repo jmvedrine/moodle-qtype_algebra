@@ -1,42 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <XMLDB PATH="question/type/symbollic/db" VERSION="20080516" COMMENT="XMLDB file for Moodle question/type/algebra">
   <TABLES>
-	<TABLE NAME="question_algebra" COMMENT="Options for algebra questions" NEXT="question_algebra_variables">
+    <TABLE NAME="question_algebra" COMMENT="Options for algebra questions" NEXT="question_algebra_variables">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"
-		       NEXT="questionid"/>
-        <FIELD NAME="questionid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0"
-		       SEQUENCE="false" PREVIOUS="id" NEXT="compareby"/>
-        <FIELD NAME="compareby" TYPE="char" LENGTH="20" NOTNULL="true" UNSIGNED="false" DEFAULT="evaluated"
-		       SEQUENCE="false" PREVIOUS="questionid" NEXT="nchecks"/>
-        <FIELD NAME="nchecks" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="10"
-		       SEQUENCE="false" PREVIOUS="compareby" NEXT="tolerance"/>
-        <FIELD NAME="tolerance" TYPE="float" NOTNULL="true" UNSIGNED="false"
-		       SEQUENCE="false" PREVIOUS="nchecks" NEXT="disallow"/>
-        <FIELD NAME="disallow" TYPE="text" LENGTH="small" NOTNULL="true" UNSIGNED="false"
-		       SEQUENCE="false" PREVIOUS="tolerance" NEXT="allowedfuncs"/>
-        <FIELD NAME="allowedfuncs" TYPE="text" LENGTH="small" NOTNULL="true" UNSIGNED="false"
-		       SEQUENCE="false" PREVIOUS="disallow" NEXT="answerprefix"/>
-        <FIELD NAME="answerprefix" TYPE="text" LENGTH="small" NOTNULL="true" UNSIGNED="false"
-		       SEQUENCE="false" PREVIOUS="allowedfuncs"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="questionid"/>
+        <FIELD NAME="questionid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="compareby"/>
+        <FIELD NAME="compareby" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="evaluated" SEQUENCE="false" PREVIOUS="questionid" NEXT="nchecks"/>
+        <FIELD NAME="nchecks" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="10" SEQUENCE="false" PREVIOUS="compareby" NEXT="tolerance"/>
+        <FIELD NAME="tolerance" TYPE="float" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="nchecks" NEXT="disallow"/>
+        <FIELD NAME="disallow" TYPE="text" LENGTH="small" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="tolerance" NEXT="allowedfuncs"/>
+        <FIELD NAME="allowedfuncs" TYPE="text" LENGTH="small" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="disallow" NEXT="answerprefix"/>
+        <FIELD NAME="answerprefix" TYPE="text" LENGTH="small" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="allowedfuncs"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="questionid"/>
         <KEY NAME="questionid" TYPE="foreign" FIELDS="questionid" REFTABLE="question" REFFIELDS="id" PREVIOUS="primary"/>
       </KEYS>
     </TABLE>
-	<TABLE NAME="question_algebra_variables" COMMENT="Variables for algebra questions" PREVIOUS="question_algebra">
+    <TABLE NAME="question_algebra_variables" COMMENT="Variables for algebra questions" PREVIOUS="question_algebra">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"
-		       NEXT="question"/>
-        <FIELD NAME="question" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0"
-		       SEQUENCE="false" PREVIOUS="id" NEXT="name"/>
-        <FIELD NAME="name" TYPE="char" LENGTH="30" NOTNULL="true" UNSIGNED="false"
-		       SEQUENCE="false" PREVIOUS="question" NEXT="min"/>
-        <FIELD NAME="min" TYPE="char" LENGTH="30" NOTNULL="true" UNSIGNED="false" DEFAULT="-"
-		       SEQUENCE="false" PREVIOUS="name" NEXT="max"/>
-        <FIELD NAME="max" TYPE="char" LENGTH="30" NOTNULL="true" UNSIGNED="false" DEFAULT="-"
-		       SEQUENCE="false" PREVIOUS="min"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="question"/>
+        <FIELD NAME="question" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="name"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="30" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="question" NEXT="min"/>
+        <FIELD NAME="min" TYPE="char" LENGTH="30" NOTNULL="true" DEFAULT="-" SEQUENCE="false" PREVIOUS="name" NEXT="max"/>
+        <FIELD NAME="max" TYPE="char" LENGTH="30" NOTNULL="true" DEFAULT="-" SEQUENCE="false" PREVIOUS="min"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="question"/>

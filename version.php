@@ -1,5 +1,10 @@
 <?php
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version  = 2011072800;
-$plugin->requires = 2011060313;
+$plugin->component = 'qtype_algebra';
+$plugin->version   = 2012061700;
+
+$plugin->requires  = 2012061700;
+
+$plugin->maturity  = MATURITY_STABLE;
+
