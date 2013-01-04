@@ -1,5 +1,47 @@
 <?php
-include('qtype_algebra_parser.php');
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * The language strings for the algebra question type.
+ *
+ * @package    qtype_algebra
+ * @author  Roger Moore <rwmoore@ualberta.ca>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+// Parser lang strings.
+$string['badclosebracket'] = 'Invalid close bracket found';
+$string['badequivtype'] = 'Invalid type: can only compare parser terms with other parser terms';
+$string['badfuncargs'] = 'Invalid arguments for the function \'{$a}\'';
+$string['decimal'] = '.';
+$string['illegalplusminus'] = 'Found a + or - in an invalid location';
+$string['mismatchedbracket'] = 'Mismatched brackets: Open and close bracket pair not of same type \'$a\'';
+$string['mismatchedcloseb'] = 'Mismatched brackets: Close bracket without an open bracket found';
+$string['mismatchedopenb'] = 'Mismatched brackets: Open bracket without a close bracket found';
+$string['missingonearg'] = 'Syntax Error: Operator \'{$a}\' missing its argument';
+$string['missingtwoargs'] = 'Syntax Error: Operator \'{$a}\' requires two arguments';
+$string['morethantwoargs'] = 'Trying to compare a term with more than 2 arguments - no code to handle this case!';
+$string['multiply'] = '\\\\times';
+$string['nargswrong'] = 'Incorrect number of arguments for the term \'{$a}\'';
+$string['noevaluate'] = 'The evaluate method for term \'{$a}\' has not been implemented';
+$string['notopterm'] = 'Syntax Error: Unable to condense to a single, top level operator';
+$string['undeclaredvar'] = 'Undeclared variable \'{$a}\' found';
+$string['undefinedfunction'] = 'Undefined function \'{$a}\'';
+$string['undefinedvariable'] = 'Undefined variable \'{$a}\' found when numerically evaluating an expression';
+$string['unknownterm'] = 'Syntax Error: Unknown term found at \'{$a}\' in the expression';
 
 $string['answermustbegiven'] = 'You must enter an answer if there is a grade or feedback.';
 $string['answerno'] = 'Answer {$a}';

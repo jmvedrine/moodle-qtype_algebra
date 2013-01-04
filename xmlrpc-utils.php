@@ -1,40 +1,40 @@
 <?php
 
 /*
-  This file is part of, or distributed with, libXMLRPC - a C library for 
+  This file is part of, or distributed with, libXMLRPC - a C library for
   xml-encoded function calls.
 
   Author: Dan Libby (dan@libby.com)
   Epinions.com may be contacted at feedback@epinions-inc.com
 */
 
-/*  
-  Copyright 2001 Epinions, Inc. 
+/*
+  Copyright 2001 Epinions, Inc.
 
-  Subject to the following 3 conditions, Epinions, Inc.  permits you, free 
-  of charge, to (a) use, copy, distribute, modify, perform and display this 
-  software and associated documentation files (the "Software"), and (b) 
-  permit others to whom the Software is furnished to do so as well.  
+  Subject to the following 3 conditions, Epinions, Inc.  permits you, free
+  of charge, to (a) use, copy, distribute, modify, perform and display this
+  software and associated documentation files (the "Software"), and (b)
+  permit others to whom the Software is furnished to do so as well.
 
-  1) The above copyright notice and this permission notice shall be included 
-  without modification in all copies or substantial portions of the 
-  Software.  
+  1) The above copyright notice and this permission notice shall be included
+  without modification in all copies or substantial portions of the
+  Software.
 
-  2) THE SOFTWARE IS PROVIDED "AS IS", WITHOUT ANY WARRANTY OR CONDITION OF 
-  ANY KIND, EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION ANY 
-  IMPLIED WARRANTIES OF ACCURACY, MERCHANTABILITY, FITNESS FOR A PARTICULAR 
-  PURPOSE OR NONINFRINGEMENT.  
+  2) THE SOFTWARE IS PROVIDED "AS IS", WITHOUT ANY WARRANTY OR CONDITION OF
+  ANY KIND, EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION ANY
+  IMPLIED WARRANTIES OF ACCURACY, MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  PURPOSE OR NONINFRINGEMENT.
 
-  3) IN NO EVENT SHALL EPINIONS, INC. BE LIABLE FOR ANY DIRECT, INDIRECT, 
-  SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES OR LOST PROFITS ARISING OUT 
-  OF OR IN CONNECTION WITH THE SOFTWARE (HOWEVER ARISING, INCLUDING 
-  NEGLIGENCE), EVEN IF EPINIONS, INC.  IS AWARE OF THE POSSIBILITY OF SUCH 
-  DAMAGES.    
+  3) IN NO EVENT SHALL EPINIONS, INC. BE LIABLE FOR ANY DIRECT, INDIRECT,
+  SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES OR LOST PROFITS ARISING OUT
+  OF OR IN CONNECTION WITH THE SOFTWARE (HOWEVER ARISING, INCLUDING
+  NEGLIGENCE), EVEN IF EPINIONS, INC.  IS AWARE OF THE POSSIBILITY OF SUCH
+  DAMAGES.
 
 */
 
 
-/* xmlrpc utilities (xu) 
+/* xmlrpc utilities (xu)
  * author: Dan Libby (dan@libby.com)
  */
 
@@ -60,7 +60,7 @@ function xu_load_extension($xmlrpc_php_dir="") {
 }
 
 /* generic function to call an http server with post method */
-function xu_query_http_post($request, $host, $uri, $port, $debug, 
+function xu_query_http_post($request, $host, $uri, $port, $debug,
                             $timeout, $user, $pass, $secure=false) {
    $response_buf = "";
    if ($host && $uri && $port) {
@@ -79,13 +79,13 @@ function xu_query_http_post($request, $host, $uri, $port, $debug,
                     base64_encode($user . ":" . $pass) . "\r\n";
          }
 
-         $http_request = 
+         $http_request =
          "POST $uri HTTP/1.0\r\n" .
          "User-Agent: xmlrpc-epi-php/0.2 (PHP)\r\n" .
          "Host: $host:$port\r\n" .
          $auth .
          "Content-Type: text/xml\r\n" .
-         "Content-Length: $content_len\r\n" . 
+         "Content-Length: $content_len\r\n" .
          "\r\n" .
          $request;
 
@@ -149,20 +149,20 @@ function find_and_decode_xml($buf, $debug) {
    return $retval;
 }
 
- 
+
 /**
  * @param params   a struct containing 3 or more of these key/val pairs:
- * @param host		 remote host (required)
- * @param uri		 remote uri	 (required)
- * @param port		 remote port (required)
+ * @param host         remote host (required)
+ * @param uri         remote uri     (required)
+ * @param port         remote port (required)
  * @param method   name of method to call
- * @param args	    arguments to send (parameters to remote xmlrpc server)
- * @param debug	 debug level (0 none, 1, some, 2 more)
- * @param timeout	 timeout in secs.  (0 = never)
- * @param user		 user name for authentication.  
- * @param pass		 password for authentication
- * @param secure	 secure. wether to use fsockopen_ssl. (requires special php build).
- * @param output	 array. xml output options. can be null.  details below:
+ * @param args        arguments to send (parameters to remote xmlrpc server)
+ * @param debug     debug level (0 none, 1, some, 2 more)
+ * @param timeout     timeout in secs.  (0 = never)
+ * @param user         user name for authentication.
+ * @param pass         password for authentication
+ * @param secure     secure. wether to use fsockopen_ssl. (requires special php build).
+ * @param output     array. xml output options. can be null.  details below:
  *
  *     output_type: return data as either php native data types or xml
  *                  encoded. ifphp is used, then the other values are ignored. default = xml
@@ -196,18 +196,18 @@ function xu_rpc_http_concise($params) {
    $host = $uri = $port = $method = $args = $debug = null;
    $timeout = $user = $pass = $secure = $debug = null;
 
-	extract($params);
+    extract($params);
 
-	// default values
-	if(!$port) {
-		$port = 80;
-	}
-	if(!$uri) {
-		$uri = '/';
-	}
-	if(!isset($output)) {
-		$output = array('version' => 'xmlrpc');
-	}
+    // default values
+    if(!$port) {
+        $port = 80;
+    }
+    if(!$uri) {
+        $uri = '/';
+    }
+    if(!isset($output)) {
+        $output = array('version' => 'xmlrpc');
+    }
 
    $response_buf = "";
    if ($host && $uri && $port) {
@@ -221,21 +221,21 @@ function xu_rpc_http_concise($params) {
 }
 
 /* call an xmlrpc method on a remote http server. legacy support. */
-function xu_rpc_http($method, $args, $host, $uri="/", $port=80, $debug=false, 
+function xu_rpc_http($method, $args, $host, $uri="/", $port=80, $debug=false,
                      $timeout=0, $user=false, $pass=false, $secure=false) {
-	return xu_rpc_http_concise(
-		array(
-			method  => $method,
-			args    => $args,
-			host    => $host,
-			uri     => $uri,
-			port    => $port,
-			debug   => $debug,
-			timeout => $timeout,
-			user    => $user,
-			pass    => $pass,
-			secure  => $secure
-		));
+    return xu_rpc_http_concise(
+        array(
+            method  => $method,
+            args    => $args,
+            host    => $host,
+            uri     => $uri,
+            port    => $port,
+            debug   => $debug,
+            timeout => $timeout,
+            user    => $user,
+            pass    => $pass,
+            secure  => $secure
+        ));
 }
 
 
@@ -266,4 +266,3 @@ function dbg2($msg, $debug_level) {
       dbg($msg);
    }
 }
-

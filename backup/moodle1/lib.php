@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -16,9 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    qtype
- * @subpackage algebra
- * @copyright  2011 David Mudrak <david@moodle.com>
+ * @package    qtype_algebra
+ * @copyright  Roger Moore <rwmoore@ualberta.ca>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -44,36 +42,36 @@ class moodle1_qtype_algebra_handler extends moodle1_qtype_handler {
      * Appends the algebra specific information to the question
      */
     public function process_question(array $data, array $raw) {
-        // convert and write the answers first
+        // Convert and write the answers first.
         if (isset($data['answers'])) {
             $this->write_answers($data['answers'], $this->pluginname);
         }
-		
-        // convert and write the algebra variables
+
+        // Convert and write the algebra variables.
         if (isset($data['algebra'][0]['varlist']['variable'])) {
             $variables   = $data['algebra'][0]['varlist']['variable'];
         } else {
             $variables   = array();
         }
-		$this->xmlwriter->begin_tag('algebra_variables');
+        $this->xmlwriter->begin_tag('algebra_variables');
         foreach ($variables as $variable) {
             $this->xmlwriter->begin_tag('algebra_variable', array('id' => $this->converter->get_nextid()));
             $this->xmlwriter->full_tag('name', $variable['name']);
             $this->xmlwriter->full_tag('min', $variable['min']);
-			$this->xmlwriter->full_tag('max', $variable['max']);
+            $this->xmlwriter->full_tag('max', $variable['max']);
             $this->xmlwriter->end_tag('algebra_variable');
         }
         $this->xmlwriter->end_tag('algebra_variables');
-		
-		// and finally the algebra options
-		$options = $data['algebra'][0];
-		$this->xmlwriter->begin_tag('algebra', array('id' => $this->converter->get_nextid()));
-		$this->xmlwriter->full_tag('compareby', $options['compareby']);
-		$this->xmlwriter->full_tag('nchecks', $options['nchecks']);
-		$this->xmlwriter->full_tag('tolerance', $options['tolerance']);
-		$this->xmlwriter->full_tag('disallow', $options['disallow']);
-		$this->xmlwriter->full_tag('allowedfuncs', $options['allowedfuncs']);
-		$this->xmlwriter->full_tag('answerprefix', $options['answerprefix']);
-		$this->xmlwriter->end_tag('algebra');
+
+        // And finally the algebra options.
+        $options = $data['algebra'][0];
+        $this->xmlwriter->begin_tag('algebra', array('id' => $this->converter->get_nextid()));
+        $this->xmlwriter->full_tag('compareby', $options['compareby']);
+        $this->xmlwriter->full_tag('nchecks', $options['nchecks']);
+        $this->xmlwriter->full_tag('tolerance', $options['tolerance']);
+        $this->xmlwriter->full_tag('disallow', $options['disallow']);
+        $this->xmlwriter->full_tag('allowedfuncs', $options['allowedfuncs']);
+        $this->xmlwriter->full_tag('answerprefix', $options['answerprefix']);
+        $this->xmlwriter->end_tag('algebra');
     }
 }

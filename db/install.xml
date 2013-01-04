@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="question/type/symbollic/db" VERSION="20080516" COMMENT="XMLDB file for Moodle question/type/algebra">
+<XMLDB PATH="question/type/algebra/db" VERSION="20080516" COMMENT="XMLDB file for Moodle question/type/algebra question type"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../../lib/xmldb/xmldb.xsd"
   <TABLES>
-    <TABLE NAME="question_algebra" COMMENT="Options for algebra questions" NEXT="question_algebra_variables">
+    <TABLE NAME="qtype_algebra" COMMENT="Options for algebra questions" NEXT="qtype_algebra_variables">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="questionid"/>
         <FIELD NAME="questionid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="compareby"/>
@@ -17,7 +19,7 @@
         <KEY NAME="questionid" TYPE="foreign" FIELDS="questionid" REFTABLE="question" REFFIELDS="id" PREVIOUS="primary"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="question_algebra_variables" COMMENT="Variables for algebra questions" PREVIOUS="question_algebra">
+    <TABLE NAME="qtype_algebra_variables" COMMENT="Variables for algebra questions" PREVIOUS="qtype_algebra">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="question"/>
         <FIELD NAME="question" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="name"/>

@@ -17,9 +17,8 @@
 /**
  * algebra answer question definition class.
  *
- * @package    qtype
- * @subpackage algebra
- * @author  Roger Moore <rwmoore 'at' ualberta.ca>
+ * @package    qtype_algebra
+ * @author  Roger Moore <rwmoore@ualberta.ca>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -41,14 +40,14 @@ class qtype_algebra_question extends question_graded_by_strategy
 
     /** @var array of question_answer. */
     public $answers = array();
-	/** @var array of question_answer. */
-	public $variables = array();
-	public $compareby;
-	public $nchecks;
-	public $tolerance;
-	public $allowedfuncs;
-	public $disallow;
-	public $answerprefix;
+    /** @var array of question_answer. */
+    public $variables = array();
+    public $compareby;
+    public $nchecks;
+    public $tolerance;
+    public $allowedfuncs;
+    public $disallow;
+    public $answerprefix;
 
     public function __construct() {
         parent::__construct(new question_first_matching_answer_grading_strategy($this));
@@ -77,17 +76,17 @@ class qtype_algebra_question extends question_graded_by_strategy
         }
         return get_string('pleaseenterananswer', 'qtype_algebra');
     }
-	
-		/**
-	  * Parses the given expression with the parser if required.
-	  *
-	  * This method will check to see if the argument it is given is already a parsed
-	  * expression and if not will attempt to parse it.
-	  *
+
+        /**
+      * Parses the given expression with the parser if required.
+      *
+      * This method will check to see if the argument it is given is already a parsed
+      * expression and if not will attempt to parse it.
+      *
       * @param $expr expression which will be parsed
-	  * @return top term of the parse tree or a string if an exception is thrown
-	  */
-	public function parse_expression($expr) {
+      * @return top term of the parse tree or a string if an exception is thrown
+      */
+    public function parse_expression($expr) {
         // Check to see if this is already a parsed expression
         if(is_a($expr,'qtype_algebra_parser_term')) {
             // It is a parsed expression so simply return it
@@ -101,32 +100,32 @@ class qtype_algebra_question extends question_graded_by_strategy
                 $varnames[]=$var->name;
             }
         }
-		// We now assume that we have a string to parse. Create a parser instance to
+        // We now assume that we have a string to parse. Create a parser instance to
         // to this and return the parser expression at the top of the parse tree
-		$p=new qtype_algebra_parser;
+        $p=new qtype_algebra_parser;
         // Perform the actual parsing inside a try-catch block so that any exceptions
         // can be caught and converted into errors
-		try {
-			return $p->parse($expr,$varnames);
-		} catch(Exception $e) {
-			// If the expression cannot be parsed then return a null term. This will
+        try {
+            return $p->parse($expr,$varnames);
+        } catch(Exception $e) {
+            // If the expression cannot be parsed then return a null term. This will
             // make Moodle treat the answer as wrong.
             // TODO: Would be nice to have support for 'invalid answer' in the quiz
             // engine since an unparseable response is usually caused by a silly typo
-			return new qtype_algebra_parser_nullterm;
-		}
-	}
+            return new qtype_algebra_parser_nullterm;
+        }
+    }
 
-		/**
-	  * Parses the given expression with the parser if required.
-	  *
-	  * This method will parse the expression and return a TeX string
-      * or empty string 
-	  *
+        /**
+      * Parses the given expression with the parser if required.
+      *
+      * This method will parse the expression and return a TeX string
+      * or empty string
+      *
       * @param $expr expression which will be parsed
-	  * @return top term of the parse tree or a string if an exception is thrown
-	  */
-	public function formated_expression($text) {
+      * @return top term of the parse tree or a string if an exception is thrown
+      */
+    public function formated_expression($text) {
 
         // Create an array of variable names for the parser from the question if defined
         $varnames=array();
@@ -135,18 +134,18 @@ class qtype_algebra_question extends question_graded_by_strategy
                 $varnames[]=$var->name;
             }
         }
-		// We now assume that we have a string to parse. Create a parser instance to
+        // We now assume that we have a string to parse. Create a parser instance to
         // to this and return the parser expression at the top of the parse tree
-		$p=new qtype_algebra_parser;
+        $p=new qtype_algebra_parser;
         // Perform the actual parsing inside a try-catch block so that any exceptions
         // can be caught and converted into errors
-		try {
+        try {
             $exp = $p->parse($text, $varnames);
-			return '$$'.$exp->tex().'$$';
-		} catch(Exception $e) {
-			return '';
-		}
-	}
+            return '$$'.$exp->tex().'$$';
+        } catch(Exception $e) {
+            return '';
+        }
+    }
 
     public function is_same_response(array $prevresponse, array $newresponse) {
         // Check that both states have valid responses
@@ -154,11 +153,11 @@ class qtype_algebra_question extends question_graded_by_strategy
             // At last one of the states did not have a response set so return false by default
             return false;
         }
-		// Parse the previous response
+        // Parse the previous response
         $expr=$this->parse_expression($prevresponse['answer']);
         // Parse the new response
         $testexpr=$this->parse_expression($newresponse['answer']);
-		// The type of comparison done depends on the comparision algorithm selected by
+        // The type of comparison done depends on the comparision algorithm selected by
         // the question. Use the defined algorithm to select which comparison function
         // to call...
         if($this->compareby == 'sage') {
@@ -182,68 +181,68 @@ class qtype_algebra_question extends question_graded_by_strategy
         if ($answer->answer == '*') {
             return true;
         }
-		$expr=$this->parse_expression($response['answer']);
+        $expr=$this->parse_expression($response['answer']);
         // Check that there is a response and if not return false. We do this here
         // because even an empty response should match a widlcard answer.
         if(is_a($expr,'qtype_algebra_parser_nullterm')) {
             return false;
         }
-		
-		// Now parse the answer
+
+        // Now parse the answer
         $ansexpr=$this->parse_expression($answer->answer);
-		// The type of comparison done depends on the comparision algorithm selected by
-		// the question. Use the defined algorithm to select which comparison function
-		// to call...
-		if($this->compareby == 'sage') {
-			// Uses an XML-RPC server with SAGE to perform a full symbollic comparision
-			return self::test_response_by_sage($expr,$ansexpr);
-		} else if($this->compareby == 'eval') {
-			// Tests the response by evaluating it for a certain range of each variable
-			return self::test_response_by_evaluation($expr,$ansexpr);
-		} else {
-			// Tests the response by performing a simple parse tree equivalence algorithm
-			return self::test_response_by_equivalence($expr,$ansexpr);
-		}
+        // The type of comparison done depends on the comparision algorithm selected by
+        // the question. Use the defined algorithm to select which comparison function
+        // to call...
+        if($this->compareby == 'sage') {
+            // Uses an XML-RPC server with SAGE to perform a full symbollic comparision
+            return self::test_response_by_sage($expr,$ansexpr);
+        } else if($this->compareby == 'eval') {
+            // Tests the response by evaluating it for a certain range of each variable
+            return self::test_response_by_evaluation($expr,$ansexpr);
+        } else {
+            // Tests the response by performing a simple parse tree equivalence algorithm
+            return self::test_response_by_equivalence($expr,$ansexpr);
+        }
     }
-	
+
     /**
-	 * Checks whether a response matches a given answer using SAGE
-	 *
-	 * This method will compare the given response to the given answer using the SAGE
-	 * open source algebra computation software. The software is run by a remote
-	 * XML-RPC server which is called with both the asnwer and the response and told to
-	 * compare the two algebraic expressions.
-	 *
-	 * @return boolean true if the response matches the answer, false otherwise
-	 */
-	function test_response_by_sage($response, $answer) {
-		$request=array(
-					   'host'   => $CFG->qtype_algebra_host,
-					   'port'   => $CFG->qtype_algebra_port,
-					   'uri'    => $CFG->qtype_algebra_uri,
-		);
-		// Sets the name of the method to call to full_symbolic_compare
-		$request['method']='full_symbolic_compare';
+     * Checks whether a response matches a given answer using SAGE
+     *
+     * This method will compare the given response to the given answer using the SAGE
+     * open source algebra computation software. The software is run by a remote
+     * XML-RPC server which is called with both the asnwer and the response and told to
+     * compare the two algebraic expressions.
+     *
+     * @return boolean true if the response matches the answer, false otherwise
+     */
+    function test_response_by_sage($response, $answer) {
+        $request=array(
+                       'host'   => $CFG->qtype_algebra_host,
+                       'port'   => $CFG->qtype_algebra_port,
+                       'uri'    => $CFG->qtype_algebra_uri,
+        );
+        // Sets the name of the method to call to full_symbolic_compare
+        $request['method']='full_symbolic_compare';
         // Get a list of all the variables to declare
         $vars=$response->get_variables();
         $vars=array_merge($vars,array_diff($vars,$answer->get_variables()));
-		// Sets the arguments to the sage string of the response and the list of variables
-		$request['args']=array($answer->sage(),$response->sage(),$vars);
-		// Calls the XML-RPC method on the server and returns the response
-		return xu_rpc_http_concise($request)==0;
+        // Sets the arguments to the sage string of the response and the list of variables
+        $request['args']=array($answer->sage(),$response->sage(),$vars);
+        // Calls the XML-RPC method on the server and returns the response
+        return xu_rpc_http_concise($request)==0;
     }
-	
+
     /**
-	 * Checks whether a response matches a given answer using an evaluation method
-	 *
-	 * This method will compare the given response to the given answer by evaluating both
-	 * for given values of the variables. Each variable must have a predefined range over
-	 * which it can be checked and then both expressions will be evalutated several times
-	 * using values randomly chosen to be within the range.
-	 *
-	 * @return boolean true if the response matches the answer, false otherwise
-	 */
-	function test_response_by_evaluation($response, $answer) {
+     * Checks whether a response matches a given answer using an evaluation method
+     *
+     * This method will compare the given response to the given answer by evaluating both
+     * for given values of the variables. Each variable must have a predefined range over
+     * which it can be checked and then both expressions will be evalutated several times
+     * using values randomly chosen to be within the range.
+     *
+     * @return boolean true if the response matches the answer, false otherwise
+     */
+    function test_response_by_evaluation($response, $answer) {
         // Flag used to denote mismatch in response and answer
         $same=true;
         // Run the evaluation loop 10 times with different random variables...
@@ -283,23 +282,23 @@ class qtype_algebra_question extends question_graded_by_strategy
             }
         }
         // We made it through the loop so now return true
-		return true;
-	}
+        return true;
+    }
 
     /**
-	 * Checks whether a response matches a given answer using a simple equivalence algorithm
-	 *
-	 * This method will compare the given response to the given answer by simply checking to
-	 * see if the two parse trees are equivalent. This allows for a slightly more sophisticated
-	 * check than a simple text compare but will not, neccessarily, catch two equivalent but
-	 * different algebraic expressions.
-	 *
-	 * @return boolean true if the response matches the answer, false otherwise
-	 */
-	public function test_response_by_equivalence($response, $answer) {
-		// Use the parser's equivalent method to see if the response is the same as the answer
-		return $response->equivalent($answer);
-	}
+     * Checks whether a response matches a given answer using a simple equivalence algorithm
+     *
+     * This method will compare the given response to the given answer by simply checking to
+     * see if the two parse trees are equivalent. This allows for a slightly more sophisticated
+     * check than a simple text compare but will not, neccessarily, catch two equivalent but
+     * different algebraic expressions.
+     *
+     * @return boolean true if the response matches the answer, false otherwise
+     */
+    public function test_response_by_equivalence($response, $answer) {
+        // Use the parser's equivalent method to see if the response is the same as the answer
+        return $response->equivalent($answer);
+    }
 
     public function check_file_access($qa, $options, $component, $filearea,
             $args, $forcedownload) {
@@ -320,7 +319,7 @@ class qtype_algebra_question extends question_graded_by_strategy
 }
 
 /**
- * Class to represent an algebra question variable, loaded from the question_algebra_variables table
+ * Class to represent an algebra question variable, loaded from the qtype_algebra_variables table
  * in the database.
  *
  * @copyright  2009 The Open University
