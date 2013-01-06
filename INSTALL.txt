@@ -9,12 +9,9 @@ REQUIREMENTS
 
 To install the algebra based question type you will need the following:
 
-1) Already installed copy of Moodle 2.1 or higher. It may work with other
-   Moodle versions but this is the only one I have tested it with.
-   
-2) PHP5: The code uses exceptions and so requires PHP version 5 at a
-   minimum. I used this since Moodle 2.1 will require it so it should
-   not be an unusual requirement for long. I used PHP 5.3.5.
+1) Already installed copy of Moodle 2.3 or higher. It was tested with Moodle
+2.3 and 2.4.
+
    
 3) If you want to use the SAGE XML-RPC server you will also need XML-RPC
    support in PHP5. Most installations include this but the MAMP 1.7.1
@@ -29,20 +26,17 @@ To install the algebra based question type you will need the following:
 
 INSTALLING
 
-1) Copy the contents of the "moodle" directory into your top level moodle
-   directory. Note that all the files are 'new' so there should be no files
-   overwritten. ('cp -iR' are good options to use).
+1) Copy the contents of the "algebra" directory into the question/type
+   subdirectory of your moodle directory.
    
-2) Go to Site Administration > Notifications and your database should be
-   configured. You are now ready to write algebra based questions which
-   use the 'Evaluate' and 'Equivalent' comarison methods.
+2) Go to Site Administration > Notifications and follow the usual procedure
+   to upgrade a Moodle plugin. You are now ready to write algebra based questions
+   which use the 'Evaluate' and 'Equivalent' comparison methods.
    
 3) To run the SAGE XML-RPC server you will need an installed copy of SAGE
    (http://www.sagemath.org/). Edit the first line of the 'sage-server.py'
    file to point to your installed copy of the sage executable. Then simply
    execute the sage-server.py script. It will run a very simple XML-RPC
    server. If the machine you run your moodle server on is different from
-   the machine running your SAGE webserver you will need to edit line 191-
-   193 of the file question/type/algebra/question.php to point to the
-   XML-RPC server. The same applies if you edit the network port. (This
-   mechanism obviously needs to be improved!)
+   the machine running your SAGE webserver you will need to enter the full
+   url

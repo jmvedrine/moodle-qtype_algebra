@@ -1,9 +1,7 @@
 MOODLE ALGEBRA QUESTION TYPE
-Updated to Moodle 2.0 by Stefan Raffeiner <stefan.raffeiner (at) gmail.com>
-Updated to Moodle 2.1 by Jean-Michel Vedrine <vedrine (at) univ-st-etienne.fr>
+Created by Roger Moore
 
-README BY ROGER MOORE:
-MOODLE ALGEBRA QUESTION TYPE
+ORIGINAL README BY ROGER MOORE:
 
 These files implement a algebra based question type for Moodle.
 Installation instructions are found in the file INSTALL.
@@ -20,4 +18,16 @@ to me.
 
 Enjoy,
 
-Roger Moore <rwmoore (at) ualberta.ca>
+Roger Moore <rwmoore@ualberta.ca>
+
+ADDITIONAL README
+
+Updated to Moodle 2.0 by Stefan Raffeiner <stefan.raffeiner@gmail.com>
+Updated to Moodle 2.1 by Jean-Michel Védrine <vedrine@univ-st-etienne.fr>
+
+This plugin is now maintained by Jean-Michel Védrine. It was verified to work with Moodle
+2.3 and 2.4. For support use the Moodle quiz forum at https://moodle.org/mod/forum/view.php?id=737
+
+Enjoy.
+
+Jean-Michel Védrine <vedrine@univ-st-etienne.fr>

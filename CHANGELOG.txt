@@ -1,3 +1,10 @@
+Version 
+New setting to select the default comparison method
+MathJax will be used for TeX rendering if MathJax isinstalled unsing
+Additionnal HTML in HEAD (will not work if Mathjax is installed using a
+theme)
+Version 
+
 Version 0.0.4
 Improvements
   - Export and import to Moodle XML format

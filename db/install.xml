@@ -2,6 +2,7 @@
 <XMLDB PATH="question/type/algebra/db" VERSION="20080516" COMMENT="XMLDB file for Moodle question/type/algebra question type"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../../lib/xmldb/xmldb.xsd"
+>
   <TABLES>
     <TABLE NAME="qtype_algebra" COMMENT="Options for algebra questions" NEXT="qtype_algebra_variables">
       <FIELDS>
