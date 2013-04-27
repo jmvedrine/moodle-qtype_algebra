@@ -43,6 +43,7 @@ $string['undefinedfunction'] = 'Undefined function \'{$a}\'';
 $string['undefinedvariable'] = 'Undefined variable \'{$a}\' found when numerically evaluating an expression';
 $string['unknownterm'] = 'Syntax Error: Unknown term found at \'{$a}\' in the expression';
 
+$string['algebraoptions'] = 'Options';
 $string['answermustbegiven'] = 'You must enter an answer if there is a grade or feedback.';
 $string['answerno'] = 'Answer {$a}';
 $string['addmoreanswerblanks'] = 'Blanks for {no} More Answers';
@@ -105,6 +106,7 @@ $string['notanumber'] = 'Invalid value: a number is required';
 $string['notenoughvars'] = 'At least one variable is required for all algebra questions';
 $string['novarmax'] = 'No maximum bound specified for variable';
 $string['novarmin'] = 'No minimum bound specified for variable';
+$string['options'] = 'Options';
 $string['parseerror'] = 'Error parsing function: \'{$a}\'';
 $string['restoreqdbfailed'] = 'Restoring algebra question failed: database write error';
 $string['restorevardbfailed'] = 'Restoring algebra question variable failed: database write error';

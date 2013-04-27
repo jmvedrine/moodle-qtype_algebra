@@ -45,6 +45,9 @@ class qtype_algebra_edit_form extends question_edit_form {
      */
     protected function definition_inner($mform) {
         global $CFG;
+        // Algebra questions options.
+        $mform->addElement('header', 'algebraoptions',
+                                                get_string('algebraoptions', 'qtype_algebra'));
         // Add the select control which will select the comparison type to use.
         $mform->addElement('select', 'compareby', get_string('compareby', 'qtype_algebra'),
                            array( "sage"  => get_string('comparesage', 'qtype_algebra'),
