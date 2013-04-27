@@ -120,8 +120,6 @@ class qtype_algebra_edit_form extends question_edit_form {
 
         // Add the form elements to enter the variables.
         $repeated[] =& $mform->createElement('header', 'variablehdr', get_string('variableno', 'qtype_algebra', '{no}'));
-        // $repeatedoptions['variablehdr']['helpbutton'] = array('variable', get_string('variable', 'qtype_algebra'),
-        //                                                      'qtype_algebra');
         $repeated[] =& $mform->createElement('text', 'variable', get_string('variablename', 'qtype_algebra'), array('size'=>20));
         $mform->setType('variable', PARAM_RAW);
         $repeated[] =& $mform->createElement('text', 'varmin', get_string('varmin', 'qtype_algebra'), array('size'=>20));
@@ -157,6 +155,10 @@ class qtype_algebra_edit_form extends question_edit_form {
 
         $this->add_interactive_settings();
 
+    }
+
+    protected function get_more_choices_string() {
+        return get_string('addmoreanswerblanks', 'qtype_algebra');
     }
 
     protected function data_preprocessing($question) {

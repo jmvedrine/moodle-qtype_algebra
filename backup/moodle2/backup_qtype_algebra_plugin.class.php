@@ -62,7 +62,7 @@ class backup_qtype_algebra_plugin extends backup_qtype_plugin {
         $pluginwrapper->add_child($algebra);
 
         // Set source to populate the data.
-        $algebra->set_source_table('qtype_algebra', array('questionid' => backup::VAR_PARENTID));
+        $algebra->set_source_table('qtype_algebra_options', array('questionid' => backup::VAR_PARENTID));
         $algebravariable->set_source_table('qtype_algebra_variables', array('question' => backup::VAR_PARENTID));
 
         // Don't need to annotate ids nor files.

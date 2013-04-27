@@ -67,9 +67,9 @@ class restore_qtype_algebra_plugin extends restore_qtype_plugin {
             // Adjust some columns.
             $data->questionid = $newquestionid;
             // Insert record.
-            $newitemid = $DB->insert_record('qtype_algebra', $data);
+            $newitemid = $DB->insert_record('qtype_algebra_options', $data);
             // Create mapping (needed for decoding links).
-            $this->set_mapping('qtype_algebra', $oldid, $newitemid);
+            $this->set_mapping('qtype_algebra_options', $oldid, $newitemid);
         }
         // Nothing to remap if the question already existed.
     }

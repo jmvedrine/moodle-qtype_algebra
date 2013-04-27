@@ -67,6 +67,16 @@ function xmldb_qtype_algebra_upgrade($oldversion=0) {
         }
         upgrade_plugin_savepoint(true, 2012061701, 'qtype', 'algebra');
     }
-    return true;   
+
+    // Change table name one more time.
+    if ($oldversion < 2012061702) {
+        // Renaming old table.
+        $table = new xmldb_table('qtype_algebra');
+        if ($dbman->table_exists($table)) {
+            $dbman->rename_table($table, 'qtype_algebra_options');
+        }
+        upgrade_plugin_savepoint(true, 2012061702, 'qtype', 'algebra');
+    }
+    return true;
 }
 
