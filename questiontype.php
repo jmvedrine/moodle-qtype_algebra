@@ -70,7 +70,7 @@ class qtype_algebra extends question_type {
 
     public function delete_question($questionid, $contextid) {
         global $DB;
-        $DB->delete_records('qtype_algebra', array('questionid' => $questionid));
+        $DB->delete_records('qtype_algebra_options', array('questionid' => $questionid));
         $DB->delete_records('qtype_algebra_variables', array('question' => $questionid));
 
         parent::delete_question($questionid, $contextid);
