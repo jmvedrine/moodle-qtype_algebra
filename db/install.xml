@@ -20,7 +20,7 @@
         <KEY NAME="questionid" TYPE="foreign" FIELDS="questionid" REFTABLE="question" REFFIELDS="id" PREVIOUS="primary"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="qtype_algebra_variables" COMMENT="Variables for algebra questions" PREVIOUS="qtype_algebra">
+    <TABLE NAME="qtype_algebra_variables" COMMENT="Variables for algebra questions" PREVIOUS="qtype_algebra_options">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="question"/>
         <FIELD NAME="question" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="name"/>
