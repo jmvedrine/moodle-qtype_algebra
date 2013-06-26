@@ -25,8 +25,9 @@ ADDITIONAL README
 Updated to Moodle 2.0 by Stefan Raffeiner <stefan.raffeiner@gmail.com>
 Updated to Moodle 2.1 by Jean-Michel Védrine <vedrine@univ-st-etienne.fr>
 
-This plugin is now maintained by Jean-Michel Védrine. It was verified to work with Moodle
-2.3 and 2.4. For support use the Moodle quiz forum at https://moodle.org/mod/forum/view.php?id=737
+This plugin is now maintained by Jean-Michel Védrine. This version is upgraded to
+work with Moodle 2.5.
+For support use the Moodle quiz forum at https://moodle.org/mod/forum/view.php?id=737
 
 Enjoy.
 
