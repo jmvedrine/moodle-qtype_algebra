@@ -29,15 +29,13 @@ require_once($CFG->dirroot . '/question/type/algebra/parser.php');
 define("SYMB_QUESTION_NUMANS_START", 2);
 define("SYMB_QUESTION_NUMANS_ADD", 1);
 
-// Override the default number of variables and the number to add to avoid clutter.
-// Algebra questions will likely not have huge number of different variables.
-define("SYMB_QUESTION_NUMVAR_START", 2);
-define("SYMB_QUESTION_NUMVAR_ADD", 1);
-
 /**
  * symoblic editing form definition.
  */
 class qtype_algebra_edit_form extends question_edit_form {
+    /** @var int we always show at least this many sets of unit fields. */
+    const VARIABLES_MIN_REPEATS = 1;
+    const VARIABLES_TO_ADD = 2;
     /**
      * Add question-type specific form fields.
      *
@@ -112,38 +110,8 @@ class qtype_algebra_edit_form extends question_edit_form {
         $mform->addElement('static', 'variablesinstruct',
                 get_string('variables', 'qtype_algebra'),
                 get_string('filloutonevariable', 'qtype_algebra'));
-        $mform->closeHeaderBefore('variablesinstruct');
-        // Create the array for the list of variables used in the question.
-        $repeated=array();
-        // Create the array for the list of repeated options used by the variable subforms.
-        $repeatedoptions = array();
 
-        // Add the form elements to enter the variables.
-        $repeated[] =& $mform->createElement('header', 'variablehdr', get_string('variableno', 'qtype_algebra', '{no}'));
-        $repeated[] =& $mform->createElement('text', 'variable', get_string('variablename', 'qtype_algebra'), array('size'=>20));
-        $mform->setType('variable', PARAM_RAW);
-        $repeated[] =& $mform->createElement('text', 'varmin', get_string('varmin', 'qtype_algebra'), array('size'=>20));
-        $mform->setType('varmin', PARAM_RAW);
-        $repeatedoptions['varmin']['default'] = '';
-        $repeated[] =& $mform->createElement('text', 'varmax', get_string('varmax', 'qtype_algebra'), array('size'=>20));
-        $mform->setType('varmax', PARAM_RAW);
-        $repeatedoptions['varmax']['default'] = '';
-
-        // Get the current number of variables defined, if any.
-        if (isset($this->question->options)) {
-            $countvars = count($this->question->options->variables);
-        } else {
-            $countvars = 0;
-        }
-        // Come up with the number of variable entries to add to the form at the start.
-        if ($this->question->formoptions->repeatelements) {
-            $repeatsatstart = (SYMB_QUESTION_NUMVAR_START > ($countvars + SYMB_QUESTION_NUMVAR_ADD))?
-            SYMB_QUESTION_NUMVAR_START : ($countvars + SYMB_QUESTION_NUMVAR_ADD);
-        } else {
-            $repeatsatstart = $countvars;
-        }
-        $this->repeat_elements($repeated, $repeatsatstart, $repeatedoptions, 'novariables', 'addvariables',
-                               SYMB_QUESTION_NUMVAR_ADD, get_string('addmorevariableblanks', 'qtype_algebra'));
+        $this->add_variable_fields($mform);
 
         $mform->addElement('static', 'answersinstruct',
                 get_string('correctanswers', 'qtype_algebra'),
@@ -157,6 +125,48 @@ class qtype_algebra_edit_form extends question_edit_form {
 
     }
 
+    /**
+     * Add the input areas for each variable.
+     * @param object $mform the form being built.
+     */
+    protected function add_variable_fields($mform) {
+        $mform->addElement('header', 'variablehdr',
+                    get_string('variables', 'qtype_algebra'), '');
+        $mform->setExpanded('variablehdr', 1);
+
+        $variablefields = array($mform->createElement('group', 'variables',
+                 get_string('variablex', 'qtype_algebra'), $this->variable_group($mform), null, false));
+
+        $repeatedoptions['variable']['type'] = PARAM_RAW;
+        $repeatedoptions['varmin']['type'] = PARAM_RAW;
+        $repeatedoptions['varmin']['default'] = '';
+        $repeatedoptions['varmax']['type'] = PARAM_RAW;
+        $repeatedoptions['varmax']['default'] = '';
+
+        if (isset($this->question->options->variables)) {
+            $repeatsatstart = max(count($this->question->options->variables), self::VARIABLES_MIN_REPEATS);
+        } else {
+            $repeatsatstart = self::VARIABLES_MIN_REPEATS;
+        }
+
+        $this->repeat_elements($variablefields, $repeatsatstart, $repeatedoptions, 'novariables', 'addvariables',
+                               self::VARIABLES_TO_ADD, get_string('addmorevariableblanks', 'qtype_algebra'), true);
+        $mform->addHelpButton('variables[0]', 'variable', 'qtype_algebra');
+    }
+
+    /**
+     * Get the form fields needed to edit one variable.
+     * @param MoodleQuickForm $mform the form being built.
+     * @return array of form fields.
+     */
+    protected function variable_group($mform) {
+        $grouparray = array();
+        $grouparray[] = $mform->createElement('text', 'variable', get_string('variablename', 'qtype_algebra'), array('size'=>10));
+        $grouparray[] = $mform->createElement('text', 'varmin', get_string('varmin', 'qtype_algebra'), array('size'=>10));
+        $grouparray[] = $mform->createElement('text', 'varmax', get_string('varmax', 'qtype_algebra'), array('size'=>20));
+
+        return $grouparray;
+    }
     protected function get_more_choices_string() {
         return get_string('addmoreanswerblanks', 'qtype_algebra');
     }
@@ -263,17 +273,17 @@ class qtype_algebra_edit_form extends question_edit_form {
             $trimvar = trim($var);
             $trimmin = trim($data['varmin'][$key]);
             $trimmax = trim($data['varmax'][$key]);
-            // Check that there is a valid variable name otherwise skip.
+            // Check that there is a nom empty variable name otherwise skip.
             if ($trimvar == '') {
                 continue;
             }
             // Check that this variable does not have the same name as a function.
             if (in_array($trimvar, qtype_algebra_parser::$functions) or in_array($trimvar, qtype_algebra_parser::$specials)) {
-                $errors['variable['.$key.']'] = get_string('illegalvarname', 'qtype_algebra', $trimvar);
+                $errors['variables['.$key.']'] = get_string('illegalvarname', 'qtype_algebra', $trimvar);
             }
             // Check that this variable has not been defined before.
             if (in_array($trimvar, $varlist)) {
-                $errors['variable['.$key.']'] = get_string('duplicatevar', 'qtype_algebra');
+                $errors['variables['.$key.']'] = get_string('duplicatevar', 'qtype_algebra', $trimvar);
             } else {
                 // Add the variable to the list of defined variables.
                 $varlist[]=$trimvar;
@@ -284,26 +294,26 @@ class qtype_algebra_edit_form extends question_edit_form {
             if ($data['compareby']=='eval') {
                 // Check that a minimum has been defined.
                 if ($trimmin == '') {
-                    $errors['varmin['.$key.']'] = get_string('novarmin', 'qtype_algebra');
+                    $errors['variables['.$key.']'] = get_string('novarmin', 'qtype_algebra');
                 } else if (!preg_match($renumber, $trimmin)) {
                     // If there is one check that it's a number.
-                    $errors['varmin['.$key.']'] = get_string('notanumber', 'qtype_algebra');
+                    $errors['variables['.$key.']'] = get_string('notanumber', 'qtype_algebra');
                 }
                 if ($trimmax == '') {
-                    $errors['varmax['.$key.']'] = get_string('novarmax', 'qtype_algebra');
+                    $errors['variables['.$key.']'] = get_string('novarmax', 'qtype_algebra');
                 } else if (!preg_match($renumber, $trimmax)) {
                     // If there is one check that it is a number.
-                    $errors['varmax['.$key.']'] = get_string('notanumber', 'qtype_algebra');
+                    $errors['variables['.$key.']'] = get_string('notanumber', 'qtype_algebra');
                 }
                 // Check that the minimum is less that the maximum!
                 if ((float)$trimmin > (float)$trimmax) {
-                    $errors['varmin['.$key.']'] = get_string('varmingtmax', 'qtype_algebra');
+                    $errors['variables['.$key.']'] = get_string('varmingtmax', 'qtype_algebra');
                 }
             } // End check for eval type.
         }     // End loop over variables.
         // Check that at least one variable is defined.
         if (count($varlist)==0) {
-            $errors['variable[0]'] = get_string('notenoughvars', 'qtype_algebra');
+            $errors['variables[0]'] = get_string('notenoughvars', 'qtype_algebra');
         }
 
         // Now perform the sanity checks on the answers.
@@ -333,7 +343,7 @@ class qtype_algebra_edit_form extends question_edit_form {
                 // Do this by looking for a non-empty array to be returned from the array_diff
                 // between the list of all declared variables and the variables in this answer.
                 if ($d=array_diff($tmpvars, $varlist)) {
-                    $errors['answer['.$key.']'] = get_string('undefinedvar', 'qtype_algebra', "'".implode("', '", $d)."'");
+                    $errors['answeroptions['.$key.']'] = get_string('undefinedvar', 'qtype_algebra', "'".implode("', '", $d)."'");
                 }
                 // Do the same for functions which we did for variables.
                 $ansfuncs=array_merge($ansfuncs, array_diff($expr->get_functions(), $ansfuncs));
@@ -347,7 +357,7 @@ class qtype_algebra_edit_form extends question_edit_form {
                     }
                 }
             } catch (Exception $e) {
-                $errors['answer['.$key.']']=$e->getMessage();
+                $errors['answeroptions['.$key.']']=$e->getMessage();
                 // Return here because subsequent errors may be wrong due to not counting the answer
                 // which just failed to parse.
                 return $errors;
@@ -355,11 +365,11 @@ class qtype_algebra_edit_form extends question_edit_form {
         }
         // Check that we have at least one answer.
         if ($answercount==0) {
-            $errors['answer[0]'] = get_string('notenoughanswers', 'quiz', 1);
+            $errors['answeroptions[0]'] = get_string('notenoughanswers', 'qtype_algebra');
         }
         // Check that at least one question has the maximum possible grade.
         if ($maxgrade == false) {
-            $errors['fraction[0]'] = get_string('fractionsnomax', 'question');
+            $errors['answeroptions[0]'] = get_string('fractionsnomax', 'question');
         }
 
         // Check for variables which are defined but never used.
@@ -370,7 +380,7 @@ class qtype_algebra_edit_form extends question_edit_form {
                 $trimvar = trim($var);
                 // If the variable is in the unused array then add the error message to that variable.
                 if (in_array($trimvar, $d)) {
-                    $errors['variable['.$key.']'] = get_string('unusedvar', 'qtype_algebra');
+                    $errors['variables['.$key.']'] = get_string('unusedvar', 'qtype_algebra');
                 }
             }
         }

@@ -95,17 +95,19 @@ receiving any grade for the question even if the response would match
 a given answer for the question.';
 $string['disallowans'] = 'Disallowed Answer';
 $string['disallowanswer'] = 'Disallowed Answer';
+$string['duplicatevar'] = 'Duplicated variable name: \'{$a}\' is already defined.';
 $string['editingalgebra'] = 'Editing an Algebra question';
 $string['evalchecks'] = 'Evaluation Checks';
 $string['filloutoneanswer'] = 'You must provide at least one possible answer. Answers left blank will not be used. \'*\' can be used as a wildcard to match any characters. The first matching answer will be used to determine the score and feedback. Only variables defined above are allowed';
-$string['filloutonevariable'] = 'You must provide at least one variable. All variables used by answers must be entered here. Minimum and a maximum values are only needed if the Evaluation comparison algorithm is used.';
-$string['illegalvarname'] = 'Illegal variable name \'{$a}\': same name as a parser function or special constant';
+$string['filloutonevariable'] = 'You must provide at least one variable.';
+$string['illegalvarname'] = 'Illegal variable name \'{$a}\': same name as a parser function or special constant.';
 $string['nchecks'] = 'Number of Evaluation Checks';
 $string['nchecks_help'] = 'Number of Evaluation Checks used in Evaluation Comparison Algorithm';
-$string['notanumber'] = 'Invalid value: a number is required';
-$string['notenoughvars'] = 'At least one variable is required for all algebra questions';
-$string['novarmax'] = 'No maximum bound specified for variable';
-$string['novarmin'] = 'No minimum bound specified for variable';
+$string['notanumber'] = 'Invalid value: a number is required.';
+$string['notenoughanswers'] = 'You must enter at least one answer.';
+$string['notenoughvars'] = 'You must enter at least one variable.';
+$string['novarmax'] = 'No maximum bound specified for variable.';
+$string['novarmin'] = 'No minimum bound specified for variable.';
 $string['options'] = 'Options';
 $string['parseerror'] = 'Error parsing function: \'{$a}\'';
 $string['restoreqdbfailed'] = 'Restoring algebra question failed: database write error';
@@ -115,14 +117,16 @@ $string['tolerance_help'] = 'Determines the maximum difference between numerical
 evaluations of the student response and question answers which will be
 allowed to count as matching.';
 $string['toleranceltzero'] = 'Tolerance must be greater than or equal to zero';
-$string['undefinedvar'] = 'Undefined variable(s) {$a} used in one or more answers';
-$string['unusedvar'] = 'This variable is not used by any answer';
-$string['variable'] = 'Variable Name';
-$string['variablename'] = 'Variable Name';
+$string['undefinedvar'] = 'Undefined variable(s) {$a} used in one or more answers.';
+$string['unusedvar'] = 'This variable is not used by any answer.';
+$string['variable'] = 'Variable';
+$string['variable_help'] = 'All variables names used in answers must be entered here. Minimum and maximum values are only needed if the Evaluation comparison algorithm is used.';
+$string['variablename'] = 'Name';
 $string['variableno'] = 'Variable {$a}';
+$string['variablex'] = 'Variable {no} ';
 $string['variables'] = 'Variables';
 $string['varmin'] = 'Minimum Value';
-$string['varmingtmax'] = 'The minimum value must be less than the maximum value';
+$string['varmingtmax'] = 'The minimum value must be less than the maximum value.';
 $string['varmax'] = 'Maximum Value';
 
 $string['pluginnameadding'] = 'Adding an algebra question';
