@@ -126,6 +126,7 @@ class qtype_algebra_question extends question_graded_by_strategy
      * @return top term of the parse tree or a string if an exception is thrown
      */
     public function formated_expression($text) {
+        global $CFG;
 
         // Create an array of variable names for the parser from the question if defined.
         $varnames=array();
@@ -141,7 +142,12 @@ class qtype_algebra_question extends question_graded_by_strategy
         // can be caught and converted into errors.
         try {
             $exp = $p->parse($text, $varnames);
-            return '$$'.$exp->tex().'$$';
+            if ($CFG->qtype_algebra_texdelimiters == 'old') {
+                return '$$'.$exp->tex().'$$';
+            } else {
+                return '\['.$exp->tex().'\]';
+            }
+            
         } catch (Exception $e) {
             return '';
         }
@@ -216,6 +222,7 @@ class qtype_algebra_question extends question_graded_by_strategy
      * @return boolean true if the response matches the answer, false otherwise
      */
     public function test_response_by_sage($response, $answer) {
+        global $CFG;
         $request=array(
                        'host'   => $CFG->qtype_algebra_host,
                        'port'   => $CFG->qtype_algebra_port,

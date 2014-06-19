@@ -37,7 +37,14 @@ if ($ADMIN->fulltree) {
     // SAGE server connection port.
     $settings->add(new admin_setting_configtext('qtype_algebra_port',
             get_string('port', 'qtype_algebra'), '', 7777, PARAM_INT));
-     // SAGE server connection uri.
+    // SAGE server connection uri.
     $settings->add(new admin_setting_configtext('qtype_algebra_uri',
             get_string('uri', 'qtype_algebra'), '', '', PARAM_TEXT));
+    // TeX expressions delimiter.
+    $settings->add(new admin_setting_configselect('qtype_algebra_texdelimiters',
+            new lang_string('texdelimiters', 'qtype_algebra'),
+            '', 'old',
+            array('old' => new lang_string('dollars', 'qtype_algebra'),
+                  'new' => new lang_string('brackets', 'qtype_algebra')
+            )));
 }

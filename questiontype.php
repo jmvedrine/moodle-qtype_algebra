@@ -61,11 +61,13 @@ class qtype_algebra extends question_type {
     public function move_files($questionid, $oldcontextid, $newcontextid) {
         parent::move_files($questionid, $oldcontextid, $newcontextid);
         $this->move_files_in_answers($questionid, $oldcontextid, $newcontextid);
+        $this->move_files_in_hints($questionid, $oldcontextid, $newcontextid);
     }
 
     protected function delete_files($questionid, $contextid) {
         parent::delete_files($questionid, $contextid);
         $this->delete_files_in_answers($questionid, $contextid);
+        $this->delete_files_in_hints($questionid, $contextid);
     }
 
     public function delete_question($questionid, $contextid) {
@@ -272,16 +274,8 @@ class qtype_algebra extends question_type {
             $question->allowedfuncs=implode(',', array_keys($question->allowedfuncs));
         }
 
-        // Call the parent method to write the extensions fields to the database. This either returns null
-        // or an error object so if we get anything then return it otherwise return our existing.
-        $parentresult = parent::save_question_options($question);
-        if ($parentresult !== null) {
-            // Parent function returns null if all is OK.
-            return $parentresult;
-        } else {
-            // Otherwise just return true - this mimics the shortanswer return format.
-            return true;
-        }
+        parent::save_question_options($question);
+        $this->save_hints($question);
     }
 
     /**
