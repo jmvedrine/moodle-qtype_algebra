@@ -43,14 +43,18 @@ try {
         $texexp='';
     } else {
         $exp = $p->parse($m[2], $vars);
-        $texexp = '$$'.$exp->tex().'$$';
+        if ($CFG->qtype_algebra_texdelimiters == 'old') {
+            $texexp = '$$'.$exp->tex().'$$';
+        } else {
+            $texexp = '\['.$exp->tex().'\]';
+        }
     }
 } catch (Exception $e) {
     $texexp = get_string('parseerror', 'qtype_algebra', $e->getMessage());
 }
 $formatoptions = new stdClass;
 $formatoptions->para = false;
-$PAGE->set_context(get_context_instance(CONTEXT_SYSTEM));
+$PAGE->set_context(context_system::instance());
 $text   = format_text($texexp, FORMAT_MOODLE, $formatoptions);
 ?>
 <html>

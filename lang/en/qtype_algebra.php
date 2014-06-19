@@ -138,3 +138,6 @@ $string['pluginnamesummary'] = 'Student enter a formula that can include one or 
 $string['host'] = 'Host url of SAGE server';
 $string['port'] = 'Port of SAGE server';
 $string['uri'] = 'uri of SAGE server';
+$string['texdelimiters'] = 'Delimiters for TeX expressions';
+$string['dollars'] = '$$...$$';
+$string['brackets'] = '\[...\]';
