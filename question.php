@@ -94,15 +94,15 @@ class qtype_algebra_question extends question_graded_by_strategy
         }
 
         // Create an array of variable names for the parser from the question if defined.
-        $varnames=array();
+        $varnames = array();
         if (isset($this->variables)) {
             foreach ($this->variables as $var) {
-                $varnames[]=$var->name;
+                $varnames[] = $var->name;
             }
         }
         // We now assume that we have a string to parse. Create a parser instance to
         // to this and return the parser expression at the top of the parse tree.
-        $p=new qtype_algebra_parser;
+        $p = new qtype_algebra_parser;
         // Perform the actual parsing inside a try-catch block so that any exceptions
         // can be caught and converted into errors.
         try {
@@ -129,15 +129,15 @@ class qtype_algebra_question extends question_graded_by_strategy
         global $CFG;
 
         // Create an array of variable names for the parser from the question if defined.
-        $varnames=array();
+        $varnames = array();
         if (isset($this->variables)) {
             foreach ($this->variables as $var) {
-                $varnames[]=$var->name;
+                $varnames[] = $var->name;
             }
         }
         // We now assume that we have a string to parse. Create a parser instance to
         // to this and return the parser expression at the top of the parse tree.
-        $p=new qtype_algebra_parser;
+        $p = new qtype_algebra_parser;
         // Perform the actual parsing inside a try-catch block so that any exceptions
         // can be caught and converted into errors.
         try {
@@ -147,7 +147,7 @@ class qtype_algebra_question extends question_graded_by_strategy
             } else {
                 return '\['.$exp->tex().'\]';
             }
-            
+
         } catch (Exception $e) {
             return '';
         }
@@ -160,9 +160,9 @@ class qtype_algebra_question extends question_graded_by_strategy
             return false;
         }
         // Parse the previous response.
-        $expr=$this->parse_expression($prevresponse['answer']);
+        $expr = $this->parse_expression($prevresponse['answer']);
         // Parse the new response.
-        $testexpr=$this->parse_expression($newresponse['answer']);
+        $testexpr = $this->parse_expression($newresponse['answer']);
         // The type of comparison done depends on the comparision algorithm selected by
         // the question. Use the defined algorithm to select which comparison function
         // to call...
@@ -187,7 +187,7 @@ class qtype_algebra_question extends question_graded_by_strategy
         if ($answer->answer == '*') {
             return true;
         }
-        $expr=$this->parse_expression($response['answer']);
+        $expr = $this->parse_expression($response['answer']);
         // Check that there is a response and if not return false. We do this here
         // because even an empty response should match a widlcard answer.
         if (is_a($expr, 'qtype_algebra_parser_nullterm')) {
@@ -195,7 +195,7 @@ class qtype_algebra_question extends question_graded_by_strategy
         }
 
         // Now parse the answer.
-        $ansexpr=$this->parse_expression($answer->answer);
+        $ansexpr = $this->parse_expression($answer->answer);
         // The type of comparison done depends on the comparision algorithm selected by
         // the question. Use the defined algorithm to select which comparison function
         // to call...
@@ -223,20 +223,20 @@ class qtype_algebra_question extends question_graded_by_strategy
      */
     public function test_response_by_sage($response, $answer) {
         global $CFG;
-        $request=array(
+        $request = array(
                        'host'   => $CFG->qtype_algebra_host,
                        'port'   => $CFG->qtype_algebra_port,
                        'uri'    => $CFG->qtype_algebra_uri,
         );
         // Sets the name of the method to call to full_symbolic_compare.
-        $request['method']='full_symbolic_compare';
+        $request['method'] = 'full_symbolic_compare';
         // Get a list of all the variables to declare.
-        $vars=$response->get_variables();
-        $vars=array_merge($vars, array_diff($vars, $answer->get_variables()));
+        $vars = $response->get_variables();
+        $vars = array_merge($vars, array_diff($vars, $answer->get_variables()));
         // Sets the arguments to the sage string of the response and the list of variables.
-        $request['args']=array($answer->sage(), $response->sage(), $vars);
+        $request['args'] = array($answer->sage(), $response->sage(), $vars);
         // Calls the XML-RPC method on the server and returns the response.
-        return xu_rpc_http_concise($request)==0;
+        return xu_rpc_http_concise($request) == 0;
     }
 
     /**
@@ -251,34 +251,34 @@ class qtype_algebra_question extends question_graded_by_strategy
      */
     public function test_response_by_evaluation($response, $answer) {
         // Flag used to denote mismatch in response and answer.
-        $same=true;
+        $same = true;
         // Run the evaluation loop 10 times with different random variables...
-        for ($i=0; $i<$this->nchecks; $i++) {
+        for ($i = 0; $i < $this->nchecks; $i++) {
             // Create an array to store the values of all the variables.
-            $values=array();
+            $values = array();
             // Loop over all the variables in the question.
             foreach ($this->variables as $var) {
                 // Set the value of the variable to a random number between the min and max.
-                $values[$var->name]=$var->min+lcg_value()*abs($var->max-$var->min);
+                $values[$var->name] = $var->min + lcg_value() * abs($var->max - $var->min);
             }
-            $resp_value=$response->evaluate($values);
-            $ans_value=$answer->evaluate($values);
+            $respvalue = $response->evaluate($values);
+            $ansvalue = $answer->evaluate($values);
             // Return false if only one of the reponse or answer gives NaN.
-            if (is_nan($resp_value) xor is_nan($ans_value)) {
+            if (is_nan($respvalue) xor is_nan($ansvalue)) {
                 return false;
             }
             // Return false if only one of the reponse or answer is infinite.
-            if (is_infinite($resp_value) xor is_infinite($ans_value)) {
+            if (is_infinite($respvalue) xor is_infinite($ansvalue)) {
                 return false;
             }
             // Use the fractional difference method if the answer has a value
             // which is clearly distinguishable from zero.
-            if (abs($ans_value)>1e-300) {
+            if (abs($ansvalue) > 1e-300) {
                 // Get the difference between the response and answer evaluations.
-                $diff=abs(($resp_value-$ans_value)/$ans_value);
+                $diff = abs(($respvalue - $ansvalue) / $ansvalue);
             } else {
                 // Otherwise use an arbitrary minimum value.
-                $diff=abs(($resp_value-$ans_value)/1e-300);
+                $diff = abs(($respvalue - $ansvalue) / 1e-300);
             }
             // Check to see if the difference is greater than tolerance.
             if ($diff > $this->tolerance) {

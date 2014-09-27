@@ -28,7 +28,7 @@ $string['badequivtype'] = 'Invalid type: can only compare parser terms with othe
 $string['badfuncargs'] = 'Invalid arguments for the function \'{$a}\'';
 $string['decimal'] = '.';
 $string['illegalplusminus'] = 'Found a + or - in an invalid location';
-$string['mismatchedbracket'] = 'Mismatched brackets: Open and close bracket pair not of same type \'$a\'';
+$string['mismatchedbracket'] = 'Mismatched brackets: Open and close bracket pair not of same type \'{$a}\'';
 $string['mismatchedcloseb'] = 'Mismatched brackets: Close bracket without an open bracket found';
 $string['mismatchedopenb'] = 'Mismatched brackets: Open bracket without a close bracket found';
 $string['missingonearg'] = 'Syntax Error: Operator \'{$a}\' missing its argument';
@@ -95,6 +95,7 @@ receiving any grade for the question even if the response would match
 a given answer for the question.';
 $string['disallowans'] = 'Disallowed Answer';
 $string['disallowanswer'] = 'Disallowed Answer';
+$string['displayresponse'] = 'Display response';
 $string['duplicatevar'] = 'Duplicated variable name: \'{$a}\' is already defined.';
 $string['editingalgebra'] = 'Editing an Algebra question';
 $string['evalchecks'] = 'Evaluation Checks';

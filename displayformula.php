@@ -32,15 +32,15 @@ global $PAGE, $CFG;
 
 $p = new qtype_algebra_parser;
 try {
-    $query=urldecode($_SERVER['QUERY_STRING']);
-    $m=array();
+    $query = urldecode($_SERVER['QUERY_STRING']);
+    $m = array();
 
     if (!preg_match('/vars=([^&]*)&expr=(.*)$/A', $query, $m)) {
         throw new Exception('Invalid query string received from http server!');
     }
-    $vars=explode(',', $m[1]);
+    $vars = explode(',', $m[1]);
     if (empty($m[2])) {
-        $texexp='';
+        $texexp = '';
     } else {
         $exp = $p->parse($m[2], $vars);
         if ($CFG->qtype_algebra_texdelimiters == 'old') {
