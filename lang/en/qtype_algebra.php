@@ -34,7 +34,6 @@ $string['mismatchedopenb'] = 'Mismatched brackets: Open bracket without a close 
 $string['missingonearg'] = 'Syntax Error: Operator \'{$a}\' missing its argument';
 $string['missingtwoargs'] = 'Syntax Error: Operator \'{$a}\' requires two arguments';
 $string['morethantwoargs'] = 'Trying to compare a term with more than 2 arguments - no code to handle this case!';
-$string['multiply'] = '\\\\times';
 $string['nargswrong'] = 'Incorrect number of arguments for the term \'{$a}\'';
 $string['noevaluate'] = 'The evaluate method for term \'{$a}\' has not been implemented';
 $string['notopterm'] = 'Syntax Error: Unable to condense to a single, top level operator';

@@ -491,7 +491,7 @@ class qtype_algebra_parser_number extends qtype_algebra_parser_term {
             $this->_base=$m[1];
             $this->_exp=$m[2];
             $eformats=array('str' => '%sE%s',
-                            'tex' => '%s '.get_string('multiply','qtype_algebra').' 10^{%s}');
+                            'tex' => '%s \\times 10^{%s}');
             parent::qtype_algebra_parser_term(self::NARGS,$eformats,$text);
         } else {
             $this->_base=$text;
@@ -865,7 +865,7 @@ class qtype_algebra_parser_multiply extends qtype_algebra_parser_term {
      */
     function qtype_algebra_parser_multiply($text) {
         $this->mformats=array('*' =>  array('str' => '%s*%s',
-                                            'tex' => '%s '.get_string('multiply','qtype_algebra').' %s'),
+                                            'tex' => '%s \\times %s'),
                               '.' =>  array('str' => '%s %s',
                                             'tex' => '%s %s',
                                             'sage'=> '%s*%s')
