@@ -1336,10 +1336,20 @@ class qtype_algebra_parser_bracket extends qtype_algebra_parser_term {
      * @return the numerical value of the term given the provided values for the variables
      */
     function evaluate($params) {
+        if($this->_sign=='-') {
+            $mult=-1;
+        } else {
+            $mult=1;
+        }
         if(count($this->_arguments)!=$this->_nargs) {
             return 0;
         }
-        return $this->_arguments[0]->evaluate($params);
+        return $mult*$this->_arguments[0]->evaluate($params);
+    }
+
+    function set_negative() {
+        // Set the sign to be a '-'
+        $this->_sign='-';
     }
 
     /**

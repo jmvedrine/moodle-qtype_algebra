@@ -62,8 +62,15 @@ $text   = format_text($texexp, FORMAT_MOODLE, $formatoptions);
         <title>Formula</title>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <?php
+
 if (!empty($CFG->additionalhtmlhead) && stripos($CFG->additionalhtmlhead, 'MathJax') !== false) {
-            echo $CFG->additionalhtmlhead;
+    // For website where Mathjax is enabled using additional HTML in head.
+    echo $CFG->additionalhtmlhead;
+} else {
+    // For other website directly include MathJax.
+    echo "<script type=\"text/javascript\" async
+  src=\"https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML\">
+</script>";
 }
 ?>
     </head>
