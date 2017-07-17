@@ -65,7 +65,7 @@ class qtype_algebra_parser_term {
      * @param $text the text from the expression associated with the array
      * @param $commutes if set to true then this term commutes (only for 2 argument terms)
      */
-    function qtype_algebra_parser_term($nargs,$formats,$text='',$commutes=false) {
+    function __construct($nargs,$formats,$text='',$commutes=false) {
         $this->_value=$text;
         $this->_nargs=$nargs;
         $this->_formats=$formats;
@@ -427,7 +427,7 @@ class qtype_algebra_parser_nullterm extends qtype_algebra_parser_term {
      * Initializes a null term class. Since this class represents nothing no special
      * initialization is required and no arguments are needed.
      */
-    function qtype_algebra_parser_nullterm() {
+    function __construct() {
         parent::qtype_algebra_parser_term(self::NARGS,self::$formats,'');
     }
 
@@ -480,7 +480,7 @@ class qtype_algebra_parser_number extends qtype_algebra_parser_term {
      *
      * @param $text string matching the number regular expression
      */
-    function qtype_algebra_parser_number($text='') {
+    function __construct($text='') {
         // Unfortunately PHP maths will only support a '.' as a decimal point and will not support
         // ',' as used in Danish, French etc. To allow for this we always convert any commas into
         // decimal points before we parse the string
@@ -628,7 +628,7 @@ class qtype_algebra_parser_variable extends qtype_algebra_parser_term {
      *
      * @param $text text matching the variable name
      */
-    function qtype_algebra_parser_variable($text) {
+    function __construct($text) {
         // Create the array to store the regular expression matches in
         $m=array();
         // Set the sign of the variable to be empty
@@ -761,7 +761,7 @@ class qtype_algebra_parser_power extends qtype_algebra_parser_term {
      *
      * @param $text string matching the term's regular expression
      */
-    function qtype_algebra_parser_power($text) {
+    function __construct($text) {
         parent::qtype_algebra_parser_term(self::NARGS,self::$formats,$text);
     }
 
@@ -808,7 +808,7 @@ class qtype_algebra_parser_divide extends qtype_algebra_parser_term {
      *
      * @param $text string matching the term's regular expression
      */
-    function qtype_algebra_parser_divide($text) {
+    function __construct($text) {
         parent::qtype_algebra_parser_term(self::NARGS,self::$formats,$text);
     }
 
@@ -863,7 +863,7 @@ class qtype_algebra_parser_multiply extends qtype_algebra_parser_term {
      *
      * @param $text string matching the term's regular expression
      */
-    function qtype_algebra_parser_multiply($text) {
+    function __construct($text) {
         $this->mformats=array('*' =>  array('str' => '%s*%s',
                                             'tex' => '%s \\times %s'),
                               '.' =>  array('str' => '%s %s',
@@ -956,7 +956,7 @@ class qtype_algebra_parser_add extends qtype_algebra_parser_term {
      *
      * @param $text string matching the term's regular expression
      */
-    function qtype_algebra_parser_add($text) {
+    function __construct($text) {
         parent::qtype_algebra_parser_term(self::NARGS,self::$formats,$text,true);
     }
 
@@ -1003,7 +1003,7 @@ class qtype_algebra_parser_subtract extends qtype_algebra_parser_term {
      *
      * @param $text string matching the term's regular expression
      */
-    function qtype_algebra_parser_subtract($text) {
+    function __construct($text) {
         parent::qtype_algebra_parser_term(self::NARGS,self::$formats,$text);
     }
 
@@ -1048,7 +1048,7 @@ class qtype_algebra_parser_special extends qtype_algebra_parser_term {
      *
      * @param $text string matching a constant's regular expression
      */
-    function qtype_algebra_parser_special($text) {
+    function __construct($text) {
         parent::qtype_algebra_parser_term(self::NARGS,self::$formats[$text],$text);
         $this->_sign='';
     }
@@ -1150,7 +1150,7 @@ class qtype_algebra_parser_function extends qtype_algebra_parser_term {
      *
      * @param $text string matching the function's regular expression
      */
-    function qtype_algebra_parser_function($text) {
+    function __construct($text) {
         if(!function_exists($text) and !array_key_exists($text,self::$fnmap)) {
             throw new Exception(get_string('undefinedfunction','qtype_algebra',$text));
         }
@@ -1304,7 +1304,7 @@ class qtype_algebra_parser_function extends qtype_algebra_parser_term {
  */
 class qtype_algebra_parser_bracket extends qtype_algebra_parser_term {
 
-    function qtype_algebra_parser_bracket($text) {
+    function __construct($text) {
         parent::qtype_algebra_parser_term(self::NARGS,self::$formats[$text],$text);
         $this->_open=$text;
         switch($this->_open) {
@@ -1441,7 +1441,7 @@ class qtype_algebra_parser {
      * find tokens in the input string which are then fed to the corresponding term class for
      * interpretation.
      */
-    function qtype_algebra_parser() {
+    function __construct() {
         $this->_tokens = array (
             array ('/(\^|\*\*)/A',                            'qtype_algebra_parser_power'    ),
             array ('/('.implode('|',self::$functions).')/A', 'qtype_algebra_parser_function'   ),
