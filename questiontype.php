@@ -529,6 +529,8 @@ class qtype_algebra extends question_type {
             $responses[$aid] = new question_possible_response($answer->answer,
                     $answer->fraction);
         }
+        $responses[0] = new question_possible_response(
+                    get_string('didnotmatchanyanswer', 'question'), 0);
         $responses[null] = question_possible_response::no_response();
 
         return array($questiondata->id => $responses);
