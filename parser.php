@@ -1306,6 +1306,7 @@ class qtype_algebra_parser_bracket extends qtype_algebra_parser_term {
 
     function __construct($text) {
         parent::__construct(self::NARGS,self::$formats[$text],$text);
+        $this->_sign=''; 
         $this->_open=$text;
         switch($this->_open) {
             case '(':
