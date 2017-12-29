@@ -1453,12 +1453,12 @@ class qtype_algebra_parser {
     public function __construct() {
         $this->_tokens = array (
             array ('/(\^|\*\*)/A',                            'qtype_algebra_parser_power'    )
-            , array ('/('.implode('|',self::$functions).')/A', 'qtype_algebra_parser_function'   )
+            , array ('/('.implode('|', self::$functions).')/A', 'qtype_algebra_parser_function'   )
             , array ('/\//A',                                    'qtype_algebra_parser_divide'   )
             , array ('/\*/A',                                   'qtype_algebra_parser_multiply' )
             , array ('/\+/A',                                   'qtype_algebra_parser_add'      )
             , array ('/-/A',                                    'qtype_algebra_parser_subtract' )
-            , array ('/('.implode('|',self::$specials).')/A',  'qtype_algebra_parser_special'  )
+            , array ('/('.implode('|', self::$specials).')/A',  'qtype_algebra_parser_special'  )
             , array ('/('.self::$expnumber.'|'.self::$plainnumber.')/A',    'qtype_algebra_parser_number'   )
             , array ('/[A-Za-z][A-Za-z0-9_]*/A',                'qtype_algebra_parser_variable' )
             );
@@ -1592,10 +1592,10 @@ class qtype_algebra_parser {
                     }
                     // Check for a zero argument term preceding a variable, function or special and then
                     // add the implicit multiplication.
-                    if (count($tree)>0 and ($token[1] == 'qtype_algebra_parser_variable' or
+                    if (count($tree) > 0 and ($token[1] == 'qtype_algebra_parser_variable' or
                         $token[1] == 'qtype_algebra_parser_function' or
                         $token[1] == 'qtype_algebra_parser_special')
-                        and (is_array($tree[count($tree)-1]) or
+                        and (is_array($tree[count($tree) - 1]) or
                         $tree[count($tree)-1]->n_args() == 0)) {
                         array_push($tree, new qtype_algebra_parser_multiply('*'));
                     }
@@ -1608,7 +1608,7 @@ class qtype_algebra_parser {
         } // End while loop over tokens.
         // If all the open brackets have been closed then the stack will be empty and the
         // tree will contain the entire parsed expression.
-        if (count($stack)>0) {
+        if (count($stack) > 0) {
             throw new Exception(get_string('mismatchedopenb', 'qtype_algebra'));
         }
         return $this->interpret($tree);
@@ -1661,9 +1661,8 @@ class qtype_algebra_parser {
                              is_a($tree[$i - 1], 'qtype_algebra_parser_number') or
                              is_a($tree[$i - 1], 'qtype_algebra_parser_bracket'))) {
                     continue;
-                }
-                // Otherwise we have found a minus sign indicating a positive or negative quantity...
-                else {
+                } else {
+                    // Otherwise we have found a minus sign indicating a positive or negative quantity...
                     // Check that we do have a number following otherwise generate an exception...
                     if ($i == (count($tree) - 1) or !method_exists($tree[$i + 1], 'set_negative')) {
                         throw new Exception(get_string('illegalplusminus', 'qtype_algebra'));
@@ -1684,10 +1683,8 @@ class qtype_algebra_parser {
         $tree = array_values($tree);
         foreach (self::$priority as $ops) {
             $i = 0;
-            //echo 'Looking for ', $ops, "\n";
             while ($i < count($tree)) {
                 if (in_array(get_class($tree[$i]), $ops)) {
-                    //echo 'Found a ', get_class($tree[$i]), "\n";
                     if ($tree[$i]->n_args() == 1) {
                         if (($i + 1) < count($tree)) {
                             $tree[$i]->set_arguments(array_splice($tree, $i + 1, 1));
@@ -1696,7 +1693,7 @@ class qtype_algebra_parser {
                         } else {
                             throw new Exception(get_string('missingonearg', 'qtype_algebra', $op));
                         }
-                    } elseif ($tree[$i]->n_args() == 2) {
+                    } else if ($tree[$i]->n_args() == 2) {
                         if ($i > 0 and $i < (count($tree) - 1)) {
                             $tree[$i]->set_arguments(array($tree[$i - 1],
                                                     $tree[$i + 1]));
@@ -1717,7 +1714,6 @@ class qtype_algebra_parser {
         if (count($tree) == 0) {
             return new qtype_algebra_parser_nullterm;
         } else if (count($tree) != 1) {
-            //print_r($tree);
             throw new Exception(get_string('notopterm', 'qtype_algebra'));
         }
         if ($bracket) {
