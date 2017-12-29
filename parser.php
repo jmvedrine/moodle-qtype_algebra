@@ -670,7 +670,7 @@ class qtype_algebra_parser_variable extends qtype_algebra_parser_term {
             // Now set the subscript to the remaining letters.
             $this->_subscript = substr($text, 1);
             // If the first letter of the subscript is an underscore then remove it.
-            if ($this->_subscript[0] == '_') {
+            if (strlen($this->_subscript) != 0 && $this->_subscript[0] == '_') {
                 $this->_subscript = substr($this->_subscript, 1);
             }
             // Call the base class constructor with the variable text set to the combination of the
@@ -1596,7 +1596,7 @@ class qtype_algebra_parser {
                         $token[1] == 'qtype_algebra_parser_function' or
                         $token[1] == 'qtype_algebra_parser_special')
                         and (is_array($tree[count($tree) - 1]) or
-                        $tree[count($tree)-1]->n_args() == 0)) {
+                        $tree[count($tree) - 1]->n_args() == 0)) {
                         array_push($tree, new qtype_algebra_parser_multiply('*'));
                     }
                     $i += strlen($m[0]);
