@@ -52,7 +52,9 @@ function qtype_algebra_parser_strlen_sort($a, $b) {
     $alen = strlen($a);
     $blen = strlen($b);
     // If the two lengths are equal return zero.
-    if ($alen == $blen) return 0;
+    if ($alen == $blen) {
+        return 0;
+    }
     // Otherwise return +1 if a > b or -1 if a < b.
     return ($alen > $blen) ? -1 : +1;
 }
@@ -66,7 +68,11 @@ function qtype_algebra_parser_strlen_sort($a, $b) {
  * variable. Each type of term implements a subclass of this base class.
  */
 class qtype_algebra_parser_term {
-
+    // Member variables.
+    public var $_value;             // String of the actual term itself.
+    public var $_arguments = array(); // Array of arguments in class form.
+    public var $_formats;           // Array of format strings.
+    public var $_nargs;             // Number of arguments for this term.
     /**
      * Constructor for the generic parser term.
      *
@@ -99,7 +105,7 @@ class qtype_algebra_parser_term {
      * @return array of the arguments that, with a format string, can be passed to sprintf
      */
     public function print_args($method) {
-        // Create an empty array to store the arguments in
+        // Create an empty array to store the arguments in.
         $args = array();
         // Handle zero argument terms differently by making the
         // first 'argument' the value of the term itself.
@@ -208,7 +214,7 @@ class qtype_algebra_parser_term {
      * @param $args array to set the arguments of the term to
      */
     public function set_arguments($args) {
-        if (count($args)!= $this->_nargs) {
+        if (count($args) != $this->_nargs) {
             throw new Exception(get_string('nargswrong', 'qtype_algebra', $this->_value));
         }
         $this->_arguments = $args;
@@ -228,7 +234,7 @@ class qtype_algebra_parser_term {
     public function check_arguments($exc = true) {
         $retval = (count($this->_arguments) == $this->_nargs);
         if ($exc && !$retval) {
-           throw new Exception(get_string('nargswrong', 'qtype_algebra', $this->_value));
+            throw new Exception(get_string('nargswrong', 'qtype_algebra', $this->_value));
         } else {
             return $retval;
         }
@@ -345,11 +351,10 @@ class qtype_algebra_parser_term {
                    $this->_arguments[1]->equivalent($expr->_arguments[1])) {
                     // Both arguments are equivalent so we have a match.
                     return true;
-                }
-                // Otherwise if the operator commutes we can see if the first argument matches
-                // the second argument and vice versa.
-                else if ($this->_commutes and $this->_arguments[0]->equivalent($expr->_arguments[1]) and
+                } else if ($this->_commutes and $this->_arguments[0]->equivalent($expr->_arguments[1]) and
                         $this->_arguments[1]->equivalent($expr->_arguments[0])) {
+                    // Otherwise if the operator commutes we can see if the first argument matches
+                    // the second argument and vice versa.
                     return true;
                 } else {
                     return false;
@@ -418,12 +423,6 @@ class qtype_algebra_parser_term {
     public function __toString() {
         return '<Algebraic parser term of type \''.get_class($this).'\'>';
     }
-
-    // Member variables.
-    var $_value;             // String of the actual term itself.
-    var $_arguments = array(); // Array of arguments in class form.
-    var $_formats;           // Array of format strings.
-    var $_nargs;             // Number of arguments for this term.
 }
 
 /**
@@ -604,7 +603,7 @@ class qtype_algebra_parser_number extends qtype_algebra_parser_term {
  */
 class qtype_algebra_parser_variable extends qtype_algebra_parser_term {
     // Define the list of variable names which will be replaced by greek letters
-    public static $greek  =  array (
+    public static $greek = array (
         'alpha',
         'beta',
         'gamma',
@@ -655,23 +654,23 @@ class qtype_algebra_parser_variable extends qtype_algebra_parser_term {
             // Extract the remaining characters for use as the subscript.
             $this->_subscript = substr($text, strlen($m[1]));
             // If the first letter of the subscript is an underscore then remove it.
-            if ($this->_subscript[0]  ==  '_') {
+            if ($this->_subscript[0] == '_') {
                 $this->_subscript = substr($this->_subscript, 1);
             }
             // Call the base class constructor with the variable text set to the combination of the
             // base name and the subscript without an underscore between them.
             parent::__construct(self::NARGS, self::$formats['greek'],
                                               $this->_base.$this->_subscript);
-        }
-        // Otherwise we have a simple multi-letter variable name. Treat the fist letter as the base
-        // name and the rest as the subscript.
-        else {
+        } else {
+            // Otherwise we have a simple multi-letter variable name. Treat the fist letter as the base
+            // name and the rest as the subscript.
+
             // Get the variable's base name.
             $this->_base = substr($text, 0, 1);
             // Now set the subscript to the remaining letters.
             $this->_subscript = substr($text, 1);
             // If the first letter of the subscript is an underscore then remove it.
-            if ($this->_subscript[0]  ==  '_') {
+            if ($this->_subscript[0] == '_') {
                 $this->_subscript = substr($this->_subscript, 1);
             }
             // Call the base class constructor with the variable text set to the combination of the
@@ -1708,7 +1707,7 @@ class qtype_algebra_parser {
                         } else {
                             throw new Exception(get_string('missingonearg', 'qtype_algebra', $op));
                         }
-                    } elseif ($tree[$i]->n_args()  ==  2) {
+                    } elseif ($tree[$i]->n_args() == 2) {
                         if ($i > 0 and $i < (count($tree)-1)) {
                             $tree[$i]->set_arguments(array($tree[$i-1],
                                                     $tree[$i+1]));
