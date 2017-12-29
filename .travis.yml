@@ -18,6 +18,7 @@ addons:
 env:
  global:
   - MOODLE_BRANCH=MOODLE_32_STABLE
+  - IGNORE_NAMES=xmlrpc-utils.php
  matrix:
   - DB=pgsql
   - DB=mysqli
