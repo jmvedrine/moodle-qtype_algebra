@@ -55,6 +55,7 @@ class qtype_algebra_test_helper extends question_test_helper {
         $q->answerprefix = '';
         $q->answers = array(
             13 => new question_answer(13, '7*x', 1.0, 'This is a very good answer.', FORMAT_HTML),
+            14 => new question_answer(14, '*', 0.0, 'This is completely wrong.', FORMAT_HTML),
         );
         $q->variables = array(
             7 => new qtype_algebra_variable(7, 'x', -5, 5)
@@ -86,7 +87,8 @@ class qtype_algebra_test_helper extends question_test_helper {
         $qdata->options->allowedfuncs = '';
         $qdata->options->answerprefix = '';
         $qdata->options->answers = array(
-            13 => new question_answer(13, '7', 1.0, 'This is a very good answer.', FORMAT_HTML),
+            13 => new question_answer(13, '7*x', 1.0, 'This is a very good answer.', FORMAT_HTML),
+            14 => new question_answer(14, '*', 0.0, 'This is completely wrong.', FORMAT_HTML),
         );
         $qdata->options->variables = array(
             7 => new qtype_algebra_variable(7, 'x', -5, 5)
@@ -114,13 +116,14 @@ class qtype_algebra_test_helper extends question_test_helper {
         $form->allowedfuncs = '';
         $form->disallow = '';
         $form->answerprefix = '';
-        $form->answer = array('7*x');
-        $form->fraction = array('1.0');
+        $form->answer = array('7*x', '*');
+        $form->fraction = array('1.0', '0.0');
         $form->variable = array('x');
         $form->varmin = array('-5');
         $form->varmax = array('5');
         $form->feedback = array(
             array('text' => 'This is a very good answer.', 'format' => FORMAT_HTML),
+            array('text' => 'This is completely wrong.', 'format' => FORMAT_HTML),
         );
 
         return $form;

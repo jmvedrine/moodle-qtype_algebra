@@ -58,7 +58,7 @@ class qtype_algebra_test extends advanced_testcase {
     }
 
     public function test_name() {
-        $this->assertEquals($this->qtype->name(), 'algebra', 'simplemath');
+        $this->assertEquals($this->qtype->name(), 'algebra');
     }
 
     public function test_can_analyse_responses() {
@@ -66,7 +66,7 @@ class qtype_algebra_test extends advanced_testcase {
     }
 
     public function test_get_random_guess_score() {
-        $q = test_question_maker::get_question_data('algebra', 'simplemath');
+        $q = test_question_maker::get_question_data('algebra');
         $q->options->answers[15]->fraction = 0.1;
         $this->assertEquals(0.1, $this->qtype->get_random_guess_score($q));
     }
