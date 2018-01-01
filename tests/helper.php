@@ -37,7 +37,7 @@ class qtype_algebra_test_helper extends question_test_helper {
 
     /**
      * Makes a algebra question with correct ansewer 7 and defaultmark 1.
-     * This question also has no variables.
+     * This question also has one variable.
      * @return qtype_algebra_question
      */
     public function make_algebra_question_simplemath() {
@@ -45,16 +45,20 @@ class qtype_algebra_test_helper extends question_test_helper {
         $q = new qtype_algebra_question();
         test_question_maker::initialise_a_question($q);
         $q->name = 'Algebra question';
-        $q->questiontext = 'Calculate 4 + 3';
-        $q->generalfeedback = 'Generalfeedback: 4 + 3 = 7.';
+        $q->questiontext = 'P(x) = 3x and Q(x) = 4x. Calculate (P + Q)(x)';
+        $q->generalfeedback = 'Generalfeedback: (P + Q)(x) = 7x.';
         $q->compareby = 'eval';
         $q->nchecks = 10;
         $q->tolerance = 0.001;
-        $q->usecase = false;
+        $q->disallow = '';
+        $q->allowedfuncs = '';
+        $q->answerprefix = '';
         $q->answers = array(
-            13 => new question_answer(13, '7', 1.0, '7 is a very good answer.', FORMAT_HTML),
+            13 => new question_answer(13, '7*x', 1.0, 'This is a very good answer.', FORMAT_HTML),
         );
-        $q->variables = array();
+        $q->variables = array(
+            7 => new qtype_algebra_variable(7, 'x', -5, 5)
+        );
         $q->qtype = question_bank::get_qtype('algebra');
         return $q;
     }
@@ -62,7 +66,7 @@ class qtype_algebra_test_helper extends question_test_helper {
     /**
      * Gets the question data for a algebra question with with correct
      * ansewer 7 and defaultmark 1.
-     * This question also has no variables.
+     * This question also has one variable.
      * @return stdClass
      */
     public function get_algebra_question_data_simplemath() {
@@ -71,17 +75,22 @@ class qtype_algebra_test_helper extends question_test_helper {
 
         $qdata->qtype = 'algebra';
         $qdata->name = 'Algebra question';
-        $qdata->questiontext = 'Calculate 4 + 3';
-        $qdata->generalfeedback = 'Generalfeedback: 4 + 3 = 7.';
+        $qdata->questiontext = 'P(x) = 3x and Q(x) = 4x. Calculate (P + Q)(x)';
+        $qdata->generalfeedback = 'Generalfeedback: (P + Q)(x) = 7x.';
 
         $qdata->options = new stdClass();
         $qdata->options->compareby = 'eval';
         $qdata->options->nchecks = 10;
         $qdata->options->tolerance = 0.001;
+        $q->options->disallow = '';
+        $q->options->allowedfuncs = '';
+        $q->options->answerprefix = '';
         $qdata->options->answers = array(
-            13 => new question_answer(13, '7', 1.0, '7 is a very good answer.', FORMAT_HTML),
+            13 => new question_answer(13, '7', 1.0, 'This is a very good answer.', FORMAT_HTML),
         );
-        $qdata->options->variables = array();
+        $qdata->options->variables = array(
+            7 => new qtype_algebra_variable(7, 'x', -5, 5)
+        );
 
         return $qdata;
     }
@@ -96,21 +105,21 @@ class qtype_algebra_test_helper extends question_test_helper {
         $form = new stdClass();
 
         $form->name = 'Algebra question';
-        $form->questiontext = array('text' => 'Calculate 4 + 3', 'format' => FORMAT_HTML);
+        $form->questiontext = array('text' => 'P(x) = 3x and Q(x) = 4x. Calculate (P + Q)(x)',
+                'format' => FORMAT_HTML);
         $form->defaultmark = 1.0;
-        $form->generalfeedback = array('text' => 'Generalfeedback: 4 + 3 = 7.', 'format' => FORMAT_HTML);
-        $form->answer = array('7');
+        $form->generalfeedback = array('text' => 'Generalfeedback: (P + Q)(x) = 7x.', 'format' => FORMAT_HTML);
+        $form->answer = array('7*x');
         $form->fraction = array('1.0');
         $form->feedback = array(
-            array('text' => '7 is a very good answer.', 'format' => FORMAT_HTML),
+            array('text' => 'This is a very good answer.', 'format' => FORMAT_HTML),
         );
 
         return $form;
     }
 
     /**
-     * Makes a algebra question with just the correct ansewer 'frog', and
-     * no other answer matching.
+     * Makes a algebra question with one correct and one partially correct answer.
      * @return qtype_algebra_question
      */
     public function make_algebra_question_derive() {
@@ -120,8 +129,18 @@ class qtype_algebra_test_helper extends question_test_helper {
         $q->name = 'Algebra question';
         $q->questiontext = 'What is the derivative of the function \(f(x) = x^2\) ?';
         $q->generalfeedback = 'Generalfeedback: 2*x is the correct answer.';
+        $q->compareby = 'eval';
+        $q->nchecks = 10;
+        $q->tolerance = 0.001;
+        $q->disallow = '';
+        $q->allowedfuncs = '';
+        $q->answerprefix = 'f(x) =';
         $q->answers = array(
             13 => new question_answer(13, '2*x', 1.0, 'Correct.', FORMAT_HTML),
+            14 => new question_answer(14, 'x', 0.2, 'It seems that you forgot something.', FORMAT_HTML),
+        );
+        $q->variables = array(
+            7 => new qtype_algebra_variable(7, 'x', -5, 5)
         );
         $q->qtype = question_bank::get_qtype('algebra');
 
@@ -129,8 +148,8 @@ class qtype_algebra_test_helper extends question_test_helper {
     }
 
     /**
-     * Gets the question data for a algebra questionwith just the correct
-     * ansewer 'frog', and no other answer matching.
+     * Gets the question data for a algebra question with one correct and
+     * one partially correct answer.
      * @return stdClass
      */
     public function get_algebra_question_data_derive() {
@@ -139,13 +158,22 @@ class qtype_algebra_test_helper extends question_test_helper {
 
         $qdata->qtype = 'algebra';
         $qdata->name = 'Algebra question';
-        $qdata->questiontext = 'Name the best amphibian: __________';
-        $qdata->generalfeedback = 'Generalfeedback: you should have said frog.';
+        $qdata->questiontext = 'What is the derivative of the function \(f(x) = x^2\) ?';
+        $qdata->generalfeedback = 'Generalfeedback: 2*x is the correct answer.';
 
         $qdata->options = new stdClass();
-        $qdata->options->usecase = false;
+        $qdata->options->compareby = 'eval';
+        $qdata->options->nchecks = 10;
+        $qdata->options->tolerance = 0.001;
+        $qdata->options->disallow = '';
+        $qdata->options->allowedfuncs = '';
+        $qdata->options->answerprefix = 'f(x) =';
         $qdata->options->answers = array(
-            13 => new question_answer(13, 'frog', 1.0, 'Frog is right.', FORMAT_HTML),
+            13 => new question_answer(13, '2*x', 1.0, 'Correct.', FORMAT_HTML),
+            14 => new question_answer(14, 'x', 0.2, 'It seems that you forgot something.', FORMAT_HTML),
+        );
+        $qdata->options->variables = array(
+            7 => new qtype_algebra_variable(7, 'x', -5, 5)
         );
 
         return $qdata;

@@ -501,7 +501,7 @@ class qtype_algebra extends question_type {
         $question->variables = array();
         if (!empty($questiondata->options->variables)) {
             foreach ($questiondata->options->variables as $v) {
-                $question->variables[$v->id] = new question_variable($v->id, $v->name, $v->min, $v->max);
+                $question->variables[$v->id] = new qtype_algebra_variable($v->id, $v->name, $v->min, $v->max);
             }
         }
         $question->compareby = $questiondata->options->compareby;
