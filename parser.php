@@ -1083,7 +1083,7 @@ class qtype_algebra_parser_special extends qtype_algebra_parser_term {
      * constant which is defined by an internal switch based on the constant's name.
      *
      * @param $params array of values keyed by variable name
-     * @return the numerical value of the term given the provided values for the variables
+     * @return int the numerical value of the term given the provided values for the variables
      */
     public function evaluate($params) {
         if ($this->_sign == '-') {
@@ -1127,7 +1127,7 @@ class qtype_algebra_parser_special extends qtype_algebra_parser_term {
     public function equals($expr) {
         // Call the default method first to check type.
         if (parent::equals($expr)) {
-            return $this->_value == $expr->_value and $this->_sign == $this->_sign;
+            return $this->_value == $expr->_value and $this->_sign == $expr->_sign;
         } else {
             return false;
         }
@@ -1280,7 +1280,7 @@ class qtype_algebra_parser_function extends qtype_algebra_parser_term {
     public function equals($expr) {
         // Call the default method first to check type.
         if (parent::equals($expr)) {
-            return $this->_value == $expr->_value and $this->_sign == $this->_sign;
+            return $this->_value == $expr->_value and $this->_sign == $expr->_sign;
         } else {
             return false;
         }
