@@ -82,9 +82,9 @@ class qtype_algebra_test_helper extends question_test_helper {
         $qdata->options->compareby = 'eval';
         $qdata->options->nchecks = 10;
         $qdata->options->tolerance = 0.001;
-        $q->options->disallow = '';
-        $q->options->allowedfuncs = '';
-        $q->options->answerprefix = '';
+        $qdata->options->disallow = '';
+        $qdata->options->allowedfuncs = '';
+        $qdata->options->answerprefix = '';
         $qdata->options->answers = array(
             13 => new question_answer(13, '7', 1.0, 'This is a very good answer.', FORMAT_HTML),
         );
