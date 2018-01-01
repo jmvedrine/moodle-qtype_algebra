@@ -63,15 +63,15 @@ class qtype_algebra_question_test extends advanced_testcase {
         $this->assertEquals(array(0, question_state::$gradedwrong),
                 $question->grade_response(array('answer' => '0')));
         $this->assertEquals(array(0, question_state::$gradedwrong),
-                $question->grade_response(array('answer' => '5')));
+                $question->grade_response(array('answer' => '5*x')));
         $this->assertEquals(array(1, question_state::$gradedright),
-                $question->grade_response(array('answer' => '7')));
+                $question->grade_response(array('answer' => '7*x')));
     }
 
     public function test_grading_test1() {
         $question = $this->get_test_algebra_question('derive');
 
-        $this->assertEquals(array(0, question_state::$gradedwrong),
+        $this->assertEquals(array(0.2, question_state::$gradedpartial),
                 $question->grade_response(array('answer' => 'x')));
         $this->assertEquals(array(0, question_state::$gradedwrong),
                 $question->grade_response(array('answer' => '0')));
@@ -100,7 +100,7 @@ class qtype_algebra_question_test extends advanced_testcase {
     }
 
     public function test_classify_response() {
-        $question = test_question_maker::make_question('derive');
+        $question = $this->get_test_algebra_question('derive');
         $question->start_attempt(new question_attempt_step(), 1);
 
         $this->assertEquals(array(
