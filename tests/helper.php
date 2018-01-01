@@ -97,8 +97,7 @@ class qtype_algebra_test_helper extends question_test_helper {
 
     /**
      * Gets the question form data for a algebra question with with correct
-     * answer 'frog', partially correct answer 'toad' and defaultmark 1.
-     * This question also has a '*' match anything answer.
+     * answer '7*x' and defaultmark 1.
      * @return stdClass
      */
     public function get_algebra_question_form_data_simplemath() {
@@ -109,8 +108,17 @@ class qtype_algebra_test_helper extends question_test_helper {
                 'format' => FORMAT_HTML);
         $form->defaultmark = 1.0;
         $form->generalfeedback = array('text' => 'Generalfeedback: (P + Q)(x) = 7x.', 'format' => FORMAT_HTML);
+        $form->compareby = 'eval';
+        $form->nchecks = 10;
+        $form->tolerance = 0.001;
+        $form->allowedfuncs = '';
+        $form->disallow = '';
+        $form->answerprefix = '';
         $form->answer = array('7*x');
         $form->fraction = array('1.0');
+        $form->variable = array('x');
+        $form->varmin = array('-5');
+        $form->varmax = array('5');
         $form->feedback = array(
             array('text' => 'This is a very good answer.', 'format' => FORMAT_HTML),
         );

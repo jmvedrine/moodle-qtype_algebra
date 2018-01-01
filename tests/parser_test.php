@@ -37,13 +37,29 @@ require_once($CFG->dirroot . '/question/type/algebra/parser.php');
  */
 
 class qtype_algebra_parser_test extends advanced_testcase {
-
+    /**
+     * Test base elements of the parser
+     */
     public function test_parser_vars_functions() {
         $p = new qtype_algebra_parser;
 
         $expr = $p->parse('sin(2x) + cos(3y)');
         $this->assertEquals(array('x', 'y'), $expr->get_variables());
         $this->assertEquals(array('sin', 'cos'),  $expr->get_functions());
+        $this->assertEquals('\sin \left( 2  x_{} \right) + \cos \left( 3  y_{} \right)', $expr->tex());
+    }
+
+    /**
+     * Test how various multiplications are displayed using TeX
+     */
+        public function test_parser_multiply_display() {
+        $p = new qtype_algebra_parser;
+
+        $expr = $p->parse('sin(2x) + cos(3y)');
         $this->assertEquals('\sin \left( 2 x_{} \right) + \cos \left( 3 y_{} \right)', $expr->tex());
+        $expr = $p->parse('sin(4 x) + cos(5 y)');
+        $this->assertEquals('\sin \left( 4 x_{} \right) + \cos \left( 5 y_{} \right)', $expr->tex());
+        $expr = $p->parse('sin(6*x) + cos(7*y)');
+        $this->assertEquals('\sin \left( 6 x_{} \right) + \cos \left( 7 y_{} \right)', $expr->tex());
     }
 }

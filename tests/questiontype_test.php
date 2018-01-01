@@ -83,7 +83,7 @@ class qtype_algebra_test extends advanced_testcase {
         ), $this->qtype->get_possible_responses($q));
     }
 
-    public function test_question_saving_frogtoad() {
+    public function test_question_saving_simplemath() {
         $this->resetAfterTest(true);
         $this->setAdminUser();
 
