@@ -391,7 +391,7 @@ class qtype_algebra_edit_form extends question_edit_form {
         if ($data['tolerance'] < 0) {
             $errors['tolerance'] = get_string('toleranceltzero', 'qtype_algebra');
         }
-
+var_dump($errors);
         return $errors;
     }
 

@@ -79,7 +79,7 @@ class qtype_algebra_test extends advanced_testcase {
             $q->id => array(
                 13 => new question_possible_response('2*x', 1),
                 14 => new question_possible_response('x', 0.2),
-                null => question_possible_response::no_response()
+                null => question_possible_response::no_response(),
                 0 => new question_possible_response(get_string('didnotmatchanyanswer', 'question'), 0),
             ),
         ), $this->qtype->get_possible_responses($q));
