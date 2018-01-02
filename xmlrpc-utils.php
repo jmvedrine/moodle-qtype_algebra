@@ -59,7 +59,7 @@ if (!extension_loaded('xmlrpc')) {
     debugging('The php xml-rpc extension is not loaded, SAGE evaluation will fail.', DEBUG_DEVELOPER);
 }
 
-/* generic function to call an http server with post method */
+// Generic function to call an http server with post method.
 function xu_query_http_post($request, $host, $uri, $port, $debug,
                             $timeout, $user, $pass, $secure = false) {
     $responsebuf = "";
@@ -206,7 +206,7 @@ function xu_rpc_http_concise($params) {
     return $retval;
 }
 
-/* call an xmlrpc method on a remote http server. legacy support. */
+// Call an xmlrpc method on a remote http server. legacy support.
 function xu_rpc_http($method, $args, $host, $uri="/", $port=80, $debug=false,
                      $timeout=0, $user=false, $pass=false, $secure=false) {
     return xu_rpc_http_concise(
@@ -231,7 +231,7 @@ function xu_is_fault($arg) {
     return is_array($arg) ? xmlrpc_is_fault($arg) : false;
 }
 
-/* Sets some http headers and prints xml */
+// Sets some http headers and prints xml.
 function xu_server_send_http_response($xml) {
     header("Content-type: text/xml");
     header("Content-length: " . strlen($xml) );

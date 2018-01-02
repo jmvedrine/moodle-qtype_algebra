@@ -81,7 +81,7 @@ class qtype_algebra_test_helper extends question_test_helper {
 
         $qdata->options = new stdClass();
         $qdata->options->compareby = 'eval';
-        $qdata->options->nchecks = 10;
+        $qdata->options->nchecks = '10';
         $qdata->options->tolerance = 0.001;
         $qdata->options->disallow = '';
         $qdata->options->allowedfuncs = '';
@@ -111,9 +111,9 @@ class qtype_algebra_test_helper extends question_test_helper {
         $form->defaultmark = 1.0;
         $form->generalfeedback = array('text' => 'Generalfeedback: (P + Q)(x) = 7x.', 'format' => FORMAT_HTML);
         $form->compareby = 'eval';
-        $form->nchecks = 10;
+        $form->nchecks = '10';
         $form->tolerance = 0.001;
-        $form->allowedfuncs = '';
+        $form->allowedfuncs = array{'all' => 1};
         $form->disallow = '';
         $form->answerprefix = '';
         $form->answer = array('7*x', '*');
@@ -125,6 +125,7 @@ class qtype_algebra_test_helper extends question_test_helper {
             array('text' => 'This is a very good answer.', 'format' => FORMAT_HTML),
             array('text' => 'This is completely wrong.', 'format' => FORMAT_HTML),
         );
+        $form->penalty = 0.3333333;
 
         return $form;
     }
