@@ -114,7 +114,7 @@ class qtype_algebra_test extends advanced_testcase {
         }
 
         foreach ($questiondata->options as $optionname => $value) {
-            if ($optionname != 'answers') {
+            if (!in_array($optionname, array('answers', 'variables'))) {
                 $this->assertAttributeEquals($value, $optionname, $actualquestiondata->options);
             }
         }
