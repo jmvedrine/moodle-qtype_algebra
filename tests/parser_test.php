@@ -58,7 +58,7 @@ class qtype_algebra_parser_test extends advanced_testcase {
         $expr = $p->parse('sin(2x) + cos(3y)');
         $this->assertEquals('\sin \left( 2  x_{} \right) + \cos \left( 3  y_{} \right)', $expr->tex());
         $expr = $p->parse('sin(4 x) + cos(5 y)');
-        $this->assertEquals('\sin \left( 4 x_{} \right) + \cos \left( 5 y_{} \right)', $expr->tex());
+        $this->assertEquals('\sin \left( 4  x_{} \right) + \cos \left( 5  y_{} \right)', $expr->tex());
         $expr = $p->parse('sin(6*x) + cos(7*y)');
         $this->assertEquals('\sin \left( 6 x_{} \right) + \cos \left( 7 y_{} \right)', $expr->tex());
     }

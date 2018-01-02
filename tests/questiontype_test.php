@@ -68,7 +68,7 @@ class qtype_algebra_test extends advanced_testcase {
 
     public function test_get_random_guess_score() {
         $q = test_question_maker::get_question_data('algebra');
-        $q->options->answers[15]->fraction = 0.1;
+        $q->options->answers[14]->fraction = 0.1;
         $this->assertEquals(0.1, $this->qtype->get_random_guess_score($q));
     }
 

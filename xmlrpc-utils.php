@@ -1,11 +1,30 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/*
-  This file is part of, or distributed with, libXMLRPC - a C library for
-  xml-encoded function calls.
+/**
+ * @package    qtype_algebra
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-  Author: Dan Libby (dan@libby.com)
-  Epinions.com may be contacted at feedback@epinions-inc.com
+/**
+ * This file was part of, or distributed with, libXMLRPC - a C library for
+ * xml-encoded function calls.
+ * Author: Dan Libby (dan@libby.com)
+ * Epinions.com may be contacted at feedback@epinions-inc.com
+ * It was adapted to Moodle standards and coding style
 */
 
 /*
@@ -33,97 +52,65 @@
 
 */
 
-
-/* xmlrpc utilities (xu)
- * author: Dan Libby (dan@libby.com)
- */
-
-// ensure extension is loaded.
-xu_load_extension();
-
-// a function to ensure the xmlrpc extension is loaded.
-// xmlrpc_epi_dir = directory where libxmlrpc.so.0 is located
-// xmlrpc_php_dir = directory where xmlrpc-epi-php.so is located
-function xu_load_extension($xmlrpc_php_dir="") {
-   $bSuccess=false;
-   if(!extension_loaded('xmlrpc')) {
-      $bSuccess = true;
-      putenv("LD_LIBRARY_PATH=/usr/lib/php4/apache/xmlrpc/");
-      if ($xmlrpc_php_dir) {
-         $xmlrpc_php_dir .= '/';
-      }
-      if (!extension_loaded("xmlrpc")) {
-         $bSuccess = dl($xmlrpc_php_dir . "xmlrpc-epi-php.so");
-      }
-   }
-   return $bSuccess;
+// Ensure extension is loaded.
+if (!extension_loaded('xmlrpc')) {
+    debugging('The php xml-rpc extension is not loaded, SAGE evaluation will fail.', DEBUG_DEVELOPER);
 }
 
 /* generic function to call an http server with post method */
 function xu_query_http_post($request, $host, $uri, $port, $debug,
-                            $timeout, $user, $pass, $secure=false) {
-   $response_buf = "";
-   if ($host && $uri && $port) {
-      $content_len = strlen($request);
+                            $timeout, $user, $pass, $secure = false) {
+    $response_buf = "";
+    if ($host && $uri && $port) {
+        $content_len = strlen($request);
 
-      $fsockopen = $secure ? "fsockopen_ssl" : "fsockopen";
+        $fsockopen = $secure ? "fsockopen_ssl" : "fsockopen";
 
-      dbg1("opening socket to host: $host, port: $port, uri: $uri", $debug);
-      $query_fd = $fsockopen($host, $port, $errno, $errstr, 10);
+        $query_fd = $fsockopen($host, $port, $errno, $errstr, 10);
 
-      if ($query_fd) {
+        if ($query_fd) {
 
-         $auth = "";
-         if ($user) {
-            $auth = "Authorization: Basic " .
+            $auth = "";
+            if ($user) {
+                $auth = "Authorization: Basic " .
                     base64_encode($user . ":" . $pass) . "\r\n";
-         }
-
-         $http_request =
-         "POST $uri HTTP/1.0\r\n" .
-         "User-Agent: xmlrpc-epi-php/0.2 (PHP)\r\n" .
-         "Host: $host:$port\r\n" .
-         $auth .
-         "Content-Type: text/xml\r\n" .
-         "Content-Length: $content_len\r\n" .
-         "\r\n" .
-         $request;
-
-         dbg1("sending http request:</h3> <xmp>\n$http_request\n</xmp>", $debug);
-
-         fputs($query_fd, $http_request, strlen($http_request));
-
-         dbg1("receiving response...", $debug);
-
-         $header_parsed = false;
-
-         $line = fgets($query_fd, 4096);
-         while ($line) {
-            if (!$header_parsed) {
-               if ($line === "\r\n" || $line === "\n") {
-                  $header_parsed = 1;
-               }
-               dbg2("got header - $line", $debug);
             }
-            else {
-               $response_buf .= $line;
-            }
+
+            $http_request =
+            "POST $uri HTTP/1.0\r\n" .
+            "User-Agent: xmlrpc-epi-php/0.2 (PHP)\r\n" .
+            "Host: $host:$port\r\n" .
+            $auth .
+            "Content-Type: text/xml\r\n" .
+            "Content-Length: $content_len\r\n" .
+            "\r\n" .
+            $request;
+
+            fputs($query_fd, $http_request, strlen($http_request));
+
+            $header_parsed = false;
+
             $line = fgets($query_fd, 4096);
-         }
+            while ($line) {
+                if (!$header_parsed) {
+                    if ($line === "\r\n" || $line === "\n") {
+                        $header_parsed = 1;
+                    }
+                } else {
+                    $response_buf .= $line;
+                }
+                $line = fgets($query_fd, 4096);
+            }
 
-         fclose($query_fd);
-      }
-      else {
-         dbg1("socket open failed", $debug);
-      }
-   }
-   else {
-      dbg1("missing param(s)", $debug);
-   }
+            fclose($query_fd);
+        } else {
+            debugging('Socket open faile', DEBUG_DEVELOPER);
+        }
+    } else {
+        debugging('Missing param(s)', DEBUG_DEVELOPER);
+    }
 
-   dbg1("got response:</h3>. <xmp>\n$response_buf\n</xmp>\n", $debug);
-
-   return $response_buf;
+    return $response_buf;
 }
 
 function xu_fault_code($code, $string) {
@@ -133,18 +120,15 @@ function xu_fault_code($code, $string) {
 
 
 function find_and_decode_xml($buf, $debug) {
-   if (strlen($buf)) {
-      $xml_begin = substr($buf, strpos($buf, "<?xml"));
-      if (strlen($xml_begin)) {
-
-         $retval = xmlrpc_decode($xml_begin);
-      }
-      else {
-         dbg1("xml start token not found", $debug);
-      }
-   }
-   else {
-      dbg1("no data", $debug);
+    if (strlen($buf)) {
+        $xml_begin = substr($buf, strpos($buf, "<?xml"));
+        if (strlen($xml_begin)) {
+           $retval = xmlrpc_decode($xml_begin);
+        } else {
+            debugging('xml start token not found', DEBUG_DEVELOPER);
+        }
+   } else {
+        debugging('no data', DEBUG_DEVELOPER);
    }
    return $retval;
 }
@@ -193,12 +177,12 @@ function find_and_decode_xml($buf, $debug) {
  *                   $output_options = array('output_type' => 'php');
  */
 function xu_rpc_http_concise($params) {
-   $host = $uri = $port = $method = $args = $debug = null;
-   $timeout = $user = $pass = $secure = $debug = null;
+    $host = $uri = $port = $method = $args = $debug = null;
+    $timeout = $user = $pass = $secure = $debug = null;
 
-    extract($params);
+     extract($params);
 
-    // default values
+    // Default values.
     if(!$port) {
         $port = 80;
     }
@@ -209,15 +193,15 @@ function xu_rpc_http_concise($params) {
         $output = array('version' => 'xmlrpc');
     }
 
-   $response_buf = "";
-   if ($host && $uri && $port) {
-      $request_xml = xmlrpc_encode_request($method, $args, $output);
-      $response_buf = xu_query_http_post($request_xml, $host, $uri, $port, $debug,
-                                         $timeout, $user, $pass, $secure);
+    $response_buf = "";
+    if ($host && $uri && $port) {
+        $request_xml = xmlrpc_encode_request($method, $args, $output);
+        $response_buf = xu_query_http_post($request_xml, $host, $uri, $port, $debug,
+                                           $timeout, $user, $pass, $secure);
 
-      $retval = find_and_decode_xml($response_buf, $debug);
-   }
-   return $retval;
+        $retval = find_and_decode_xml($response_buf, $debug);
+    }
+    return $retval;
 }
 
 /* call an xmlrpc method on a remote http server. legacy support. */
@@ -241,28 +225,13 @@ function xu_rpc_http($method, $args, $host, $uri="/", $port=80, $debug=false,
 
 
 function xu_is_fault($arg) {
-   // xmlrpc extension finally supports this.
+   // The xmlrpc extension finally supports this.
    return is_array($arg) ? xmlrpc_is_fault($arg) : false;
 }
 
-/* sets some http headers and prints xml */
+/* Sets some http headers and prints xml */
 function xu_server_send_http_response($xml) {
     header("Content-type: text/xml");
     header("Content-length: " . strlen($xml) );
     echo $xml;
-}
-
-
-function dbg($msg) {
-   echo "<h3>$msg</h3>"; flush();
-}
-function dbg1($msg, $debug_level) {
-   if ($debug_level >= 1) {
-      dbg($msg);
-   }
-}
-function dbg2($msg, $debug_level) {
-   if ($debug_level >= 2) {
-      dbg($msg);
-   }
 }
