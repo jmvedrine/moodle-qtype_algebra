@@ -29,6 +29,7 @@ global $CFG;
 require_once($CFG->dirroot . '/question/type/algebra/questiontype.php');
 require_once($CFG->dirroot . '/question/engine/tests/helpers.php');
 require_once($CFG->dirroot . '/question/type/edit_question_form.php');
+require_once($CFG->dirroot . '/question/type/algebra/parser.php');
 require_once($CFG->dirroot . '/question/type/algebra/edit_algebra_form.php');
 
 /**
@@ -79,6 +80,7 @@ class qtype_algebra_test extends advanced_testcase {
                 13 => new question_possible_response('2*x', 1),
                 14 => new question_possible_response('x', 0.2),
                 null => question_possible_response::no_response()
+                0 => new question_possible_response(get_string('didnotmatchanyanswer', 'question'), 0),
             ),
         ), $this->qtype->get_possible_responses($q));
     }

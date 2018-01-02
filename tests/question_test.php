@@ -107,7 +107,7 @@ class qtype_algebra_question_test extends advanced_testcase {
                 new question_classified_response(13, '2*x', 1.0)),
                 $question->classify_response(array('answer' => '2*x')));
         $this->assertEquals(array(
-                new question_classified_response(15, '5*x', 0.0)),
+                new question_classified_response(0, '5*x', 0)),
                 $question->classify_response(array('answer' => '5*x')));
         $this->assertEquals(array(
                 question_classified_response::no_response()),
