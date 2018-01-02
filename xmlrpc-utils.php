@@ -23,7 +23,7 @@
 // xml-encoded function calls.
 // Author: Dan Libby (dan@libby.com)
 // Epinions.com may be contacted at feedback@epinions-inc.com
-// It was adapted to Moodle standards and coding style
+// It was adapted to Moodle standards and coding style.
 
 // Copyright 2001 Epinions, Inc.
 
