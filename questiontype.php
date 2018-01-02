@@ -27,7 +27,6 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/question/type/questiontypebase.php');
 require_once($CFG->dirroot . '/question/type/algebra/question.php');
 require_once($CFG->dirroot . '/question/type/algebra/parser.php');
-require_once($CFG->dirroot . '/question/type/algebra/xmlrpc-utils.php');
 
 /**
  * ALGEBRA QUESTION TYPE CLASS
