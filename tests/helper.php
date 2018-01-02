@@ -113,7 +113,7 @@ class qtype_algebra_test_helper extends question_test_helper {
         $form->compareby = 'eval';
         $form->nchecks = '10';
         $form->tolerance = 0.001;
-        $form->allowedfuncs = array{'all' => 1};
+        $form->allowedfuncs = array('all' => 1);
         $form->disallow = '';
         $form->answerprefix = '';
         $form->answer = array('7*x', '*');
