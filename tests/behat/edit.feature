@@ -50,7 +50,7 @@ Feature: Test editing an Algebra question
     And I set the following fields to these values:
       | behaviour | immediatefeedback |
     And I press "Start again with these options"
-    And I set the field with xpath "//div[@class='qtext']//input[contains(@id, '1_answer')]" to "6*x"
+    And I set the field with xpath "//div[@class='answer']//input[contains(@id, '1_answer')]" to "6*x"
     And I press "Check"
     Then I should see "3x + 4x gives 7x not 6x."
     And I should see "Generalfeedback: (P + Q)(x) = 7x."
