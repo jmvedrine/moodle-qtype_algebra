@@ -36,6 +36,7 @@ Feature: Preview a Short answer question
     And I set the field with xpath "//div[@class='answer']//input[contains(@id, '1_answer')]" to "7*x"
     And I press "Check"
     Then I should see "This is a very good answer."
+    Then I should see "Mark 1.00 out of 1.00"
     And I should see "Generalfeedback: (P + Q)(x) = 7x."
     And I should see "The correct answer is: 7*x"
 
@@ -50,6 +51,6 @@ Feature: Preview a Short answer question
     And I press "Start again with these options"
     And I set the field with xpath "//div[@class='answer']//input[contains(@id, '1_answer')]" to "6*x"
     And I press "Check"
-    Then I should see "That is a bad answer."
+    Then I should see "Mark 0.00 out of 1.00"
     And I should see "Generalfeedback: (P + Q)(x) = 7x."
     And I should see "The correct answer is: 7*x"

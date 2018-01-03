@@ -36,7 +36,7 @@ Feature: Test editing an Algebra question
     And I press "id_submitbutton"
     Then I should see "Edited algebra-001 name"
     When I click on "Edit" "link" in the "Edited algebra-001 name" "table_row"
-    And I press "id_addvariables"
+    And I press "id_addanswers"
     And I set the following fields to these values:
       | id_answer_1          | 6*x                        |
       | id_fraction_1        | 10%                        |
