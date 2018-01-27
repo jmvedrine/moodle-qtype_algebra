@@ -21,20 +21,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-// From the PHP manual: check for the existance of lcfirst and
-// if not found create one.
-if (!function_exists('lcfirst')) {
-    /**
-     * Make a string's first character lowercase
-     *
-     * @param string $str
-     * @return string the resulting string.
-     */
-    function lcfirst( $str ) {
-        $str[0] = strtolower($str[0]);
-        return (string)$str;
-    }
-}
+require_once(__DIR__.'/../../../config.php');
+
+require_login();
 
 /**
  * Helper function which will compare two strings using their length only.
@@ -42,20 +31,22 @@ if (!function_exists('lcfirst')) {
  * This function is intended for use in sorting arrays of strings by their string
  * length. This is used to order arrays for regular expressions so that the longest
  * expressions are checked first.
+ * In this version, if both strings have equal length, string order is used. So this
+ * version of the sort is stable.
  *
  * @param $a first string to compare
  * @param $b second string to compare
- * @return -1 if $a is longer than $b, 0 if they are the same length and +1 if $a is shorter
+ * @return -1 if $a is longer than $b,  and +1 if $a is shorter
  */
 function qtype_algebra_parser_strlen_sort($a, $b) {
     // Get the two string lengths once so we don't have to repeat the function call.
     $alen = strlen($a);
     $blen = strlen($b);
-    // If the two lengths are equal return zero.
+    // If the two lengths are equal use strings order.
     if ($alen == $blen) {
-        return 0;
+        return ($a > $b) ? -1 : +1;
     }
-    // Otherwise return +1 if a > b or -1 if a < b.
+    // Otherwise return +1 if a is shorter or -1 if longer.
     return ($alen > $blen) ? -1 : +1;
 }
 
@@ -73,6 +64,7 @@ class qtype_algebra_parser_term {
     public $_arguments = array(); // Array of arguments in class form.
     public $_formats;           // Array of format strings.
     public $_nargs;             // Number of arguments for this term.
+    
     /**
      * Constructor for the generic parser term.
      *
@@ -434,7 +426,8 @@ class qtype_algebra_parser_term {
  * throw an exception in such cases.
  */
 class qtype_algebra_parser_nullterm extends qtype_algebra_parser_term {
-
+    /** @var The TeX multiply operator. */
+    public $id;
     /**
      * Constructs an instance of a null term.
      *
@@ -505,7 +498,7 @@ class qtype_algebra_parser_number extends qtype_algebra_parser_term {
             $this->_base = $m[1];
             $this->_exp = $m[2];
             $eformats = array('str' => '%sE%s',
-                            'tex' => '%s \\times 10^{%s}');
+                            'tex' => '%s \\' . get_config('qtype_algebra', 'multiplyoperator') . '10^{%s}');
             parent::__construct(self::NARGS, $eformats, $text);
         } else {
             $this->_base = $text;
@@ -654,7 +647,7 @@ class qtype_algebra_parser_variable extends qtype_algebra_parser_term {
             // Extract the remaining characters for use as the subscript.
             $this->_subscript = substr($text, strlen($m[1]));
             // If the first letter of the subscript is an underscore then remove it.
-            if ($this->_subscript[0] == '_') {
+            if (strlen($this->_subscript) != 0 && $this->_subscript[0] == '_') {
                 $this->_subscript = substr($this->_subscript, 1);
             }
             // Call the base class constructor with the variable text set to the combination of the
@@ -879,7 +872,7 @@ class qtype_algebra_parser_multiply extends qtype_algebra_parser_term {
      */
     public function __construct($text) {
         $this->mformats = array('*' => array('str' => '%s*%s',
-                                            'tex' => '%s \\times %s'),
+                                            'tex' => '%s \\' . get_config('qtype_algebra', 'multiplyoperator') . ' %s'),
                                 '.' => array('str' => '%s %s',
                                             'tex' => '%s %s',
                                             'sage' => '%s*%s')
@@ -900,7 +893,7 @@ class qtype_algebra_parser_multiply extends qtype_algebra_parser_term {
         parent::set_arguments($args);
         // Set the default explicit format.
         $this->_formats = $this->mformats['*'];
-        // Only allow the implicit multipication if the second argument is either a
+        // Only allow the implicit multiplication if the second argument is either a
         // special, variable, function or bracket and not negative. In all other cases the operator must be
         // explicitly written.
         if (is_a($args[1], 'qtype_algebra_parser_bracket') or
@@ -918,7 +911,7 @@ class qtype_algebra_parser_multiply extends qtype_algebra_parser_term {
             // power terms are parsed before multiplication ones and are required to
             // have two arguments.
             $powargs = $args[1]->arguments();
-            // Allow the implicit multipication if the power's first argument is either a
+            // Allow the implicit multiplication if the power's first argument is either a
             // special, variable, function or bracket and not negative.
             if (is_a($powargs[0], 'qtype_algebra_parser_bracket') or
                is_a($powargs[0], 'qtype_algebra_parser_variable') or
@@ -1728,4 +1721,3 @@ class qtype_algebra_parser {
 // Sort static arrays once here by inverse string length.
 usort(qtype_algebra_parser_variable::$greek, 'qtype_algebra_parser_strlen_sort');
 usort(qtype_algebra_parser::$functions, 'qtype_algebra_parser_strlen_sort');
-

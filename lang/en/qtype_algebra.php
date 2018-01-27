@@ -141,3 +141,7 @@ $string['uri'] = 'uri of SAGE server';
 $string['texdelimiters'] = 'Delimiters for TeX expressions';
 $string['dollars'] = '$$...$$';
 $string['brackets'] = '\[...\]';
+$string['invalidanswer'] = 'Invalid or unrecongnized answer';
+$string['multiplyoperator'] = 'TeX operator for multiplication';
+$string['times'] = '\\times';
+$string['cdot'] = '\\cdot';
