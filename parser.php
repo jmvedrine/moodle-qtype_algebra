@@ -23,8 +23,6 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once(__DIR__.'/../../../config.php');
 
-require_login();
-
 /**
  * Helper function which will compare two strings using their length only.
  *
@@ -49,7 +47,6 @@ function qtype_algebra_parser_strlen_sort($a, $b) {
     // Otherwise return +1 if a is shorter or -1 if longer.
     return ($alen > $blen) ? -1 : +1;
 }
-
 
 /**
  * Class which represents a single term in an algebraic expression.
