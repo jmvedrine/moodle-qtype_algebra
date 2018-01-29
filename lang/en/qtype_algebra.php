@@ -27,6 +27,7 @@ $string['badclosebracket'] = 'Invalid close bracket found';
 $string['badequivtype'] = 'Invalid type: can only compare parser terms with other parser terms';
 $string['badfuncargs'] = 'Invalid arguments for the function \'{$a}\'';
 $string['decimal'] = '.';
+$string['exceptionmessage'] = '{$a}';
 $string['illegalplusminus'] = 'Found a + or - in an invalid location';
 $string['mismatchedbracket'] = 'Mismatched brackets: Open and close bracket pair not of same type \'{$a}\'';
 $string['mismatchedcloseb'] = 'Mismatched brackets: Close bracket without an open bracket found';
