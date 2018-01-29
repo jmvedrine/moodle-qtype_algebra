@@ -30,7 +30,7 @@
 require_once('../../../config.php');
 require_once("$CFG->dirroot/question/type/algebra/parser.php");
 
-global $PAGE;
+global $PAGE, $CFG;
 require_login();
 
 $p = new qtype_algebra_parser;
