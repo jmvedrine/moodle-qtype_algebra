@@ -64,7 +64,7 @@ class qtype_algebra_parser_term {
     public $_arguments = array(); // Array of arguments in class form.
     public $_formats;           // Array of format strings.
     public $_nargs;             // Number of arguments for this term.
-    
+
     /**
      * Constructor for the generic parser term.
      *
