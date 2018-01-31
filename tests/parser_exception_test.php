@@ -18,7 +18,7 @@
  * Unit tests for the short answer question definition class.
  *
  * @package    qtype_algebra
- * @copyright  2017 Jean-Michel Vedrine
+ * @copyright  2018 Jean-Michel Vedrine
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -32,20 +32,50 @@ require_once($CFG->dirroot . '/question/type/algebra/parser.php');
 
 
 /**
- * Unit tests for the algebra question parser.
+ * Unit tests for exceptions of the algebra question parser.
  *
- * @copyright  2017 Jean-Michel Vedrine
+ * @copyright  2018 Jean-Michel Vedrine
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 class qtype_algebra_parser_exception_test extends advanced_testcase {
     /**
-     * Test parsing an invalid exprssion
+     * No close bracket.
      */
-    public function test_parser_invalid() {
+    public function test_parser_mismatched_brackets() {
         $this->expectException('parser_exception');
         $this->expectExceptionMessage('Mismatched brackets: Open bracket without a close bracket found');
         $p = new qtype_algebra_parser;
         $expr = $p->parse('sin(2x) + cos(');
+    }
+
+    /**
+     * Wrong number of arguments for function.
+     */
+    public function test_parser_wrong_arguments_number() {
+        $this->expectException('parser_exception');
+        $this->expectExceptionMessage('Syntax Error: Operator '^' requires two arguments');
+        $p = new qtype_algebra_parser;
+        $expr = $p->parse('x^');
+    }
+
+    /**
+     * Plus or minus in an invalid location.
+     */
+    public function test_parser_invalid_minus() {
+        $this->expectException('parser_exception');
+        $this->expectExceptionMessage('Found a + or - in an invalid location');
+        $p = new qtype_algebra_parser;
+        $expr = $p->parse('(-)');
+    }
+
+    /**
+     * Operator missing one argument.
+     */
+    public function test_parser_invalid_minus() {
+        $this->expectException('parser_exception');
+        $this->expectExceptionMessage('Syntax Error: Operator '-' requires two arguments');
+        $p = new qtype_algebra_parser;
+        $expr = $p->parse('x-');
     }
 }

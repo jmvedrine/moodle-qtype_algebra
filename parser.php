@@ -21,8 +21,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-// require_once(__DIR__.'/../../../config.php');
-
 /**
  * Helper function which will compare two strings using their length only.
  *
