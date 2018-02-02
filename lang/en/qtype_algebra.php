@@ -146,3 +146,6 @@ $string['invalidanswer'] = 'Invalid or unrecongnized answer';
 $string['multiplyoperator'] = 'TeX operator for multiplication';
 $string['times'] = '\\times';
 $string['cdot'] = '\\cdot';
+$string['iframe'] = 'Using an iframe element';
+$string['dynamic'] = 'Using dynamic AJAX request';
+$string['formuladisplay'] = 'Method to display answer formula';

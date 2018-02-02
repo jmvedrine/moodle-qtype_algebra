@@ -54,4 +54,11 @@ if ($ADMIN->fulltree) {
             array('times' => new lang_string('times', 'qtype_algebra'),
                   'cdot' => new lang_string('cdot', 'qtype_algebra')
             )));
+    // Method to diplay TeX formatted answer formula.
+    $settings->add(new admin_setting_configselect('qtype_algebra/formuladisplay',
+            new lang_string('formuladisplay', 'qtype_algebra'),
+            '', 'times',
+            array('iframe' => new lang_string('iframe', 'qtype_algebra'),
+                  'dynamic' => new lang_string('dynamic', 'qtype_algebra')
+            )));
 }

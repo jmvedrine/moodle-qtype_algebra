@@ -16,15 +16,40 @@
 
 /**
  * @package    qtype_algebra
- * @copyright  Roger Moore <rwmoore@ualberta.ca>
+ * @copyright  2018 Jean-Michel Vedrine
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+define('AJAX_SCRIPT', true);
 
-$plugin->component = 'qtype_algebra';
-$plugin->version   = 2018020100;
+require_once(__DIR__ . '/../../../config.php');
+require_once(__DIR__ . '/parser.php');
 
-$plugin->requires  = 2013050100;
-$plugin->release   = '1.6 for Moodle 2.8, ... 3.5';
-$plugin->maturity  = MATURITY_STABLE;
+$p = new qtype_algebra_parser;
+
+$vars  = required_param('vars', PARAM_RAW);
+$expr  = required_param('expr', PARAM_RAW);
+/*
+if (!confirm_sesskey()) {
+    header('HTTP/1.1 403 Forbidden');
+    die();
+}
+*/
+try {
+    $vars = explode(',', $vars);
+    if (empty($expr)) {
+        $texexp = '';
+    } else {
+        $exp = $p->parse($expr, $vars);
+        $texexp = $exp->tex();
+    }
+} catch (Exception $e) {
+    $texexp = '';
+}
+if ($CFG->qtype_algebra_texdelimiters == 'old') {
+    $texexp = '$$' . $texexp . '$$';
+} else {
+    $texexp = '\\[' . $texexp . '\\]';
+}
+header('Content-Type: application/json; charset: utf-8');
+echo json_encode($texexp);
