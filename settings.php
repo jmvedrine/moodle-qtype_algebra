@@ -59,7 +59,7 @@ if ($ADMIN->fulltree) {
     // Method to diplay TeX formatted answer formula.
     $settings->add(new admin_setting_configselect('qtype_algebra/formuladisplay',
             new lang_string('formuladisplay', 'qtype_algebra'),
-            '', 'times',
+            '', 'iframe',
             array('iframe' => new lang_string('iframe', 'qtype_algebra'),
                   'dynamic' => new lang_string('dynamic', 'qtype_algebra')
             )));
