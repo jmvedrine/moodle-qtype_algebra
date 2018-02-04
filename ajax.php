@@ -38,18 +38,30 @@ if (!confirm_sesskey()) {
 try {
     $vars = explode(',', $vars);
     if (empty($expr)) {
-        $texexp = '';
+        $texexp = ' ';
     } else {
         $exp = $p->parse($expr, $vars);
         $texexp = $exp->tex();
     }
 } catch (Exception $e) {
-    $texexp = '';
+    $texexp = ' ';
 }
-if ($CFG->qtype_algebra_texdelimiters == 'old') {
-    $texexp = '$$' . $texexp . '$$';
-} else {
-    $texexp = '\\[' . $texexp . '\\]';
+
+$delimiters = $CFG->qtype_algebra_texdelimiters;
+switch($delimiters) {
+    case 'old':
+        $texexp = '$$' . $texexp . '$$';
+        break;
+    case 'new':
+        $texexp = '\\[' . $texexp . '\\]';
+        break;
+    case 'simple';
+        $texexp = '$' . $texexp . '$';
+        break;
+    case 'inline':
+        $texexp = '\\(' . $texexp . '\\)';
+        break;
 }
+
 header('Content-Type: application/json; charset: utf-8');
 echo json_encode($texexp);

@@ -76,14 +76,14 @@ class qtype_algebra_renderer extends qtype_renderer {
         }
         
         // Create an array of variable names to use when displaying the function entered.
-        $varnames = array();
+        $vars = array();
         if ($question and isset($question->variables)) {
             $variables = $question->variables;
             foreach ($question->variables as $var) {
-                $varnames[] = $var->name;
+                $vars[] = $var->name;
             }
         }
-        $varnames = implode(',', $varnames);
+        $varnames = implode(',', $vars);
 
         $questiontext = $question->format_questiontext($qa);
 
@@ -142,25 +142,9 @@ class qtype_algebra_renderer extends qtype_renderer {
                 'style' => 'display:none',
                 )
             );
-            $p = new qtype_algebra_parser;
-            try {
-                $vars = explode(',', $varnames);
-                if (empty($currentanswer)) {
-                    $texexp = '';
-                } else {
-                    $exp = $p->parse($currentanswer, $vars);
-                    $texexp = $exp->tex();
-               }
-            } catch (Exception $e) {
-               $texexp = '';
-            }
-            if ($CFG->qtype_algebra_texdelimiters == 'old') {
-                $texexp = '$$' . $texexp . '$$';
-            } else {
-                $texexp = '\\[' . $texexp . '\\]';
-            }
-            $display = $question->format_text("<span class=\"filter_mathjaxloader_equation\">" . $texexp ."</span>",
-                                    1 ,$qa, 'question', 'questiontext', $question->id);
+
+            $display = $question->format_text("<span class=\"filter_mathjaxloader_equation\">" . $question->formated_expression($currentanswer, $vars) ."</span>",
+                                    FORMAT_MOODLE ,$qa, 'question', 'questiontext', $question->id);
             $result .= html_writer::tag('div', $display ,array(
                 'type' => 'text',
                 'name' => $nameprefix . '_display',
