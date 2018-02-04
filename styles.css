@@ -6,10 +6,9 @@
     width: 80%;
 }
 .que.algebra .displayformula {
-    padding: 0.3em;
     display: block;
     min-width: 300px;
-    min-height: 70px ! important;
+    min-height: 70px;
     background: #fff;
     padding: 0.5em;
     margin-top: 1em;
