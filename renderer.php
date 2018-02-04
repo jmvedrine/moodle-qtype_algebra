@@ -23,9 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-
 defined('MOODLE_INTERNAL') || die();
-
 
 /**
  * Generates the output for algebra questions.
@@ -38,13 +36,10 @@ class qtype_algebra_renderer extends qtype_renderer {
             question_display_options $options) {
             global $CFG;
 
-
         $this->page->requires->js_call_amd('qtype_algebra/display', 'init');
 
         $question = $qa->get_question();
-
         $currentanswer = $qa->get_last_qt_var('answer');
-
         $inputname = $qa->get_qt_field_name('answer');
 
         $nameprefix = str_replace(':', '_', $inputname); // Valid javascript name.
@@ -74,7 +69,7 @@ class qtype_algebra_renderer extends qtype_renderer {
         } else {
             $inputattributes['class'] = 'algebra_answer';
         }
-        
+
         // Create an array of variable names to use when displaying the function entered.
         $vars = array();
         if ($question and isset($question->variables)) {
@@ -90,7 +85,7 @@ class qtype_algebra_renderer extends qtype_renderer {
         $input = html_writer::empty_tag('input', $inputattributes) . $feedbackimg;
 
         $result = html_writer::tag('div', $questiontext, array('class' => 'qtext'));
-        
+
         $result .= html_writer::start_tag('div', array('class' => 'ablock'));
         $result .= html_writer::start_tag('div', array('class' => 'prompt', 'style' => 'vertical-align: top'));
         if (isset($question->answerprefix) and !empty($question->answerprefix)) {
@@ -134,7 +129,7 @@ class qtype_algebra_renderer extends qtype_renderer {
             $result .= html_writer::tag('script', $dfname.'();', array('type' => 'text/javascript'));
             $result .= html_writer::end_tag('div');
         } else {
-            $result .= html_writer::tag('div', $varnames ,array(
+            $result .= html_writer::tag('div', $varnames , array(
                 'type' => 'text',
                 'name' => $nameprefix . '_vars',
                 'id' => $nameprefix . '_vars',
@@ -144,8 +139,8 @@ class qtype_algebra_renderer extends qtype_renderer {
             );
 
             $display = $question->format_text($question->formated_expression($currentanswer, $vars),
-                                    FORMAT_MOODLE ,$qa, 'question', 'questiontext', $question->id);
-            $result .= html_writer::tag('div', $display ,array(
+                                    FORMAT_MOODLE , $qa, 'question', 'questiontext', $question->id);
+            $result .= html_writer::tag('div', $display , array(
                 'type' => 'text',
                 'name' => $nameprefix . '_display',
                 'id' => $nameprefix. '_display',
