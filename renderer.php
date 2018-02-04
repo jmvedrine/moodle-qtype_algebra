@@ -143,7 +143,7 @@ class qtype_algebra_renderer extends qtype_renderer {
                 )
             );
 
-            $display = $question->format_text("<span class=\"filter_mathjaxloader_equation\">" . $question->formated_expression($currentanswer, $vars) ."</span>",
+            $display = $question->format_text($question->formated_expression($currentanswer, $vars),
                                     FORMAT_MOODLE ,$qa, 'question', 'questiontext', $question->id);
             $result .= html_writer::tag('div', $display ,array(
                 'type' => 'text',

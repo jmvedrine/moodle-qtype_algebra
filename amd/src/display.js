@@ -5,19 +5,20 @@ define(['jquery', 'core/config', 'core/notification'], function($, config, notif
                 // Convert answer id to valid javascript name.
                 var id = $(this).attr('id');
                 var display = id.replace(':', '_');
-                var varnames = $('#' + display + '_vars').html();
-                var currentanswer = $(this).val();
                 var params = {
-                    vars: varnames,
-                    expr: currentanswer,
+                    vars: $('#' + display + '_vars').html(),
+                    expr: $(this).val(),
                     sesskey: config.sesskey,
                 };
                 $.post(config.wwwroot + '/question/type/algebra/ajax.php', params, null, 'json')
                     .done(function(data) {
                         // Replace TeX form in page.
-                        $('#' + display + '_display').html("<span class=\"filter_mathjaxloader_equation\">" + data +"</span>");
-                        // MathJax update.
-                        MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+                        var displaydiv = $('#' + display + '_display');
+                        displaydiv.html("<span class=\"filter_mathjaxloader_equation\">" + data +"</span>");
+                        // Notify the filters about the modified node.
+                        require(['core/event'], function(event) {
+                            event.notifyFilterContentUpdated(displaydiv);
+                        });
                     })
                     .fail(function(jqXHR, status, error) {
                         notification.exception(error);
