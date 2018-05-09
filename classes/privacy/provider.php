@@ -15,16 +15,36 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Privacy main class.
+ *
  * @package    qtype_algebra
- * @copyright  Roger Moore <rwmoore@ualberta.ca>
+ * @copyright  2018 Jean-Michel vedrine
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace qtype_algebra\privacy;
+
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'qtype_algebra';
-$plugin->version   = 2018020401;
+/**
+ * Privacy main class.
+ *
+ * @package    qtype_algebra
+ * @copyright  2018 Jean-Michel Vedrine
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class provider implements \core_privacy\local\metadata\null_provider {
 
-$plugin->requires  = 2013050100;
-$plugin->release   = '1.71 for Moodle 2.8, ... 3.5';
-$plugin->maturity  = MATURITY_STABLE;
+    // To provide php 5.6 (33_STABLE) and up support.
+    use \core_privacy\local\legacy_polyfill;
+
+    /**
+     * Get the language string identifier with the component's language
+     * file to explain why this plugin stores no data.
+     *
+     * @return  string
+     */
+    public static function get_reason() : string {
+        return 'privacy:metadata';
+    }
+}
