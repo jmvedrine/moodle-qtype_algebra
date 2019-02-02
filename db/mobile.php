@@ -31,7 +31,7 @@ $addons = array(
         "handlers" => array( // Different places where the add-on will display content.
             'algebra' => array( // Handler unique name (can be anything).
                 'displaydata' => array(
-                    'title' => 'Regular Expression Short Answer',
+                    'title' => 'Algebra',
                     'icon' => '/question/type/algebra/pix/icon.gif',
                     'class' => '', // What does this do?
                 ),
