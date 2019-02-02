@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Mobile output class for question type algebra.
+ * Mobile output class for algebra question type.
  *
  * @package qtype_algebra
  * @copyright 2019 Jean-Michel Vedrine
@@ -28,7 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 
 /**
  * Mobile output class for question type algebra.
- * @copyright 2018 Joseph Rézeau
+ * @copyright 2019 Jean-Michel Vedrine
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class mobile {
