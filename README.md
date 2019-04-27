@@ -3,10 +3,9 @@ MOODLE ALGEBRA QUESTION TYPE
 
 Created by Roger Moore
 
-ORIGINAL README BY ROGER MOORE:
+### Original readme by Roger Moore
 
 These files implement a algebra based question type for Moodle.
-Installation instructions are found in the file INSTALL.
 
 The code has been tested and used for a large, introductory physics
 course (~120 students) at the University of Alberta for several
@@ -22,7 +21,7 @@ Enjoy,
 
 Roger Moore <rwmoore@ualberta.ca>
 
-ADDITIONAL README
+### Additional readme
 
 Updated to Moodle 2.0 by Stefan Raffeiner <stefan.raffeiner@gmail.com>
 Updated to Moodle 2.1 by Jean-Michel Védrine <vedrine@univ-st-etienne.fr>
@@ -53,4 +52,4 @@ WARNING :
 I am now retired and I stopped all Moodle related activities.
 This repository is here just for history and this work is not maintained any more.
 Feel free to fork it and modify it to suit your needs or improve compatibility with recent Moodle versions.
-Additionaly you can consider contacting the Moodle team and become the new maintainer of this lugin. Thanks
+Additionally you can consider contacting the Moodle team and become the new maintainer of this plugin. Thanks
