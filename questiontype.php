@@ -54,10 +54,6 @@ class qtype_algebra extends question_type {
                      );
     }
 
-    public function questionid_column_name() {
-        return 'questionid';
-    }
-
     public function move_files($questionid, $oldcontextid, $newcontextid) {
         parent::move_files($questionid, $oldcontextid, $newcontextid);
         $this->move_files_in_answers($questionid, $oldcontextid, $newcontextid);
@@ -73,7 +69,7 @@ class qtype_algebra extends question_type {
     public function delete_question($questionid, $contextid) {
         global $DB;
         $DB->delete_records('qtype_algebra_options', array('questionid' => $questionid));
-        $DB->delete_records('qtype_algebra_variables', array('question' => $questionid));
+        $DB->delete_records('qtype_algebra_variables', array('questionid' => $questionid));
 
         parent::delete_question($questionid, $contextid);
     }
@@ -94,7 +90,7 @@ class qtype_algebra extends question_type {
         // Create the results class.
         $result = new stdClass;
         // Get all the old answers from the database as an array.
-        if (!$oldvars = $DB->get_records('qtype_algebra_variables', array('question' => $question->id), 'id ASC')) {
+        if (!$oldvars = $DB->get_records('qtype_algebra_variables', array('questionid' => $question->id), 'id ASC')) {
             $oldvars = array();
         }
         // Create an array of the variable IDs for the question.
@@ -122,7 +118,7 @@ class qtype_algebra extends question_type {
                 // This is a completely new variable so we have to create a new record.
                 $var = new stdClass;
                 $var->name     = trim($varname);
-                $var->question = $question->id;
+                $var->questionid = $question->id;
                 $var->min      = trim($question->varmin[$key]);
                 $var->max      = trim($question->varmax[$key]);
                 // Insert a new record into the database table.
@@ -305,7 +301,7 @@ class qtype_algebra extends question_type {
             return false;
         }
         // Now get the variables from the database as well.
-        $question->options->variables = $DB->get_records('qtype_algebra_variables', array('question' => $question->id));
+        $question->options->variables = $DB->get_records('qtype_algebra_variables', array('questionid' => $question->id));
         // Check that we have variables and if not then bail since this question type requires variables.
 
         if (count($question->options->variables) == 0) {
