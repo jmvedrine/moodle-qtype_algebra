@@ -1,4 +1,6 @@
 MOODLE ALGEBRA QUESTION TYPE
+----------------------------
+
 Created by Roger Moore
 
 ORIGINAL README BY ROGER MOORE:
@@ -27,7 +29,21 @@ Updated to Moodle 2.1 by Jean-Michel Védrine <vedrine@univ-st-etienne.fr>
 
 This plugin is now maintained by Jean-Michel Védrine. This version is upgraded to
 work with Moodle 2.8 and ulteriors versions.
+
 For support use the Moodle quiz forum at https://moodle.org/mod/forum/view.php?id=737
+
+### Installation and set-up
+
+#### Install from the Moodle plugins database
+
+    https://moodle.org/plugins/qtype_algebra
+
+#### Install using git
+
+To install using git, type these commands in the root of your Moodle install:
+git clone https://github.com/jmvedrine/moodle-qtype_algebra.git  question/type/algebra echo '/question/type/algebra/' >> .git/info/exclude
+
+Then run the moodle update process Site administration > Notifications
 
 Enjoy.
 
