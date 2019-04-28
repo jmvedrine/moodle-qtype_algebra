@@ -80,7 +80,7 @@ function xmldb_qtype_algebra_upgrade($oldversion=0) {
         }
         upgrade_plugin_savepoint(true, 2012061702, 'qtype', 'algebra');
     }
-    
+
     if ($oldversion < 2019042705) {
 
         // Define key question (foreign) to be dropped form qtype_algebra_variables.

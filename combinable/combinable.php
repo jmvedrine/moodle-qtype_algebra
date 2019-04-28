@@ -129,11 +129,8 @@ class qtype_combined_combinable_algebra extends qtype_combined_combinable_text_e
             $variables['varmax'][] = $variable->max;
         }
         $data = parent::data_to_form($context, $fileoptions) + $answers + $variables;
-
-
         return $data;
     }
-
 
     public function validate() {
         $errors = array();
@@ -257,7 +254,6 @@ class qtype_combined_combinable_algebra extends qtype_combined_combinable_text_e
         if ($this->formdata->tolerance < 0) {
             $errors[$this->form_field_name('tolerance')] = get_string('toleranceltzero', 'qtype_algebra');
         }
-
 
         return $errors;
     }
