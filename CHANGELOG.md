@@ -3,9 +3,8 @@
 The algebra question type can now be used as a subquestion of a combined question (see https://moodle.org/plugins/qtype_combined)
 There are some limitations when you insert an algebra question in a combined question:
 
-  - There is no Answer box prefix as this is not needed in algebra subquestion included in combined question because you can write what you want in the combined question text before the algebra subquestion.
-  - Allowed Functions is always "All" as this feature was never implemented yeux grands ouverts (I must remove it one day or finish it, it is here like that from the beginning when Roger Moore created this question type)
-  - There is only one variable allowed in each algebra subquestion (this is the most important limitation unfortunately, I am still trying to allow several variables but I face some difficulties)
+  - There is no Answer box prefix because you can write what you want in the combined question text before the algebra subquestion.
+  - Allowed Functions is always "All" as this feature was never implemented (I must remove it one day or finish it, it is here like that from the beginning when Roger Moore created this question type)
   - Each answer is always 100% and there is no answer feedback, only a global feedback for the subquestion when the student response is not correct (All combinable question types seems to have the same limitations so I don't know if this is a limitation of the combined API)
 
 The algebra question now support Moodle mobile (only available with Moodle 3.5 and ulterior versions, will not work with Moodle previous versions). A big thank you to Marcus Green for all his work on adding mobile support to question types.

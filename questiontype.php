@@ -120,6 +120,15 @@ class qtype_algebra extends question_type {
     }
 
     /**
+     * Returns true is answer with the $key is empty in the question data and should not be saved in DB.
+     * @param object $questiondata This holds the information from the question editing form or import.
+     * @param int $key A key of the answer in question.
+     * @return bool True if answer shouldn't be saved in DB.
+     */
+    protected function is_answer_empty($questiondata, $key) {
+        return trim($questiondata->answer[$key]) == '';
+    }
+    /**
      * Saves question-type specific options
      *
      * This is called by {@link save_question()} to save the question-type specific data from a
@@ -156,7 +165,6 @@ class qtype_algebra extends question_type {
             $result->error = $e->getMessage();
             return $result;
         }
-
         // Process the allowed functions field. This code just sets up the variable, it is saved
         // in the parent class' save_question_options method called at the end of this method
         // Look for the 'all' option. If we find it then set the string to an empty value.

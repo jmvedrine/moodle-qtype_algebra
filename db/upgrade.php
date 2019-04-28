@@ -41,7 +41,7 @@ function xmldb_qtype_algebra_upgrade($oldversion=0) {
         upgrade_plugin_savepoint(true, 2008061500, 'qtype', 'algebra');
     }
 
-    // Drop the answers and variables fields wich are totaly redundants.
+    // Drop the answers and variables fields wich are totally redundant.
     if ($oldversion < 2011072800) {
         $table = new xmldb_table('question_algebra');
         $field = new xmldb_field('answers');
