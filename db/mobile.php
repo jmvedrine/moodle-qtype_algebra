@@ -35,7 +35,7 @@ $addons = [
                 'delegate' => 'CoreQuestionDelegate', // Delegate (where to display the link to the add-on).
                 'method' => 'mobile_get_algebra',
                 'offlinefunctions' => [
-                    'mobile_get_algebra' => [],// function in classes/output/mobile.php
+                    'mobile_get_algebra' => [], // Function in classes/output/mobile.php.
                 ], // Function needs caching for offline.
                 'styles' => [
                     'url' => '/question/type/algebra/mobile/styles_app.css',
@@ -44,7 +44,7 @@ $addons = [
             ]
         ],
         'lang' => [
-                    ['pluginname', 'qtype_algebra'], // matching value in  lang/en/qtype_algebra
+                    ['pluginname', 'qtype_algebra'], // Matching value in  lang/en/qtype_algebra.
         ],
     ]
 ];
