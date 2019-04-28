@@ -26,5 +26,5 @@ $plugin->component = 'qtype_algebra';
 $plugin->version   = 2019042707;
 
 $plugin->requires  = 2016052300;
-$plugin->release   = '1.8 for Moodle 3.0 ... 3.6';
+$plugin->release   = '1.9 for Moodle 3.0 ... 3.7';
 $plugin->maturity  = MATURITY_STABLE;
