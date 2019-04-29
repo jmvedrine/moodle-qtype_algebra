@@ -109,17 +109,17 @@ function xmldb_qtype_algebra_upgrade($oldversion=0) {
         upgrade_plugin_savepoint(true, 2019042706, 'qtype', 'algebra');
     }
 
-    if ($oldversion < 2019042707) {
+    if ($oldversion < 2019042900) {
 
-        // Define key questionid (foreign-unique) to be added to qtype_algebra_variables.
+        // Define key questionid (foreign) to be added to qtype_algebra_variables.
         $table = new xmldb_table('qtype_algebra_variables');
-        $key = new xmldb_key('questionid', XMLDB_KEY_FOREIGN_UNIQUE, array('questionid'), 'question', array('id'));
+        $key = new xmldb_key('questionid', XMLDB_KEY_FOREIGN, array('questionid'), 'question', array('id'));
 
         // Launch add key questionid.
         $dbman->add_key($table, $key);
 
         // Record that qtype_algebra savepoint was reached.
-        upgrade_plugin_savepoint(true, 2019042707, 'qtype', 'algebra');
+        upgrade_plugin_savepoint(true, 2019042900, 'qtype', 'algebra');
     }
 
     return true;
