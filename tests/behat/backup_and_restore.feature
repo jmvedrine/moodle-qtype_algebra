@@ -30,6 +30,7 @@ Feature: Test duplicating a quiz containing an Algebra question
       | Schema | Course name | Course 2 |
     And I navigate to "Question bank" in current page administration
     And I click on "Edit" "link" in the "Algebra question" "table_row"
+    And I click on "Edit question" "link" in the "Algebra question" "table_row"
     Then the following fields match these values:
       | Question name        | Algebra question                                  |
       | Question text        | P(x) = 3x and Q(x) = 4x. Calculate (P + Q)(x)     |
