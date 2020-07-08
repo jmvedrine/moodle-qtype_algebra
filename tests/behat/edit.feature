@@ -27,6 +27,7 @@ Feature: Test editing an Algebra question
   @javascript @_switch_window
   Scenario: Edit an Algebra question
     When I click on "Edit" "link" in the "algebra-001 for editing" "table_row"
+    And I click on "Edit question" "link" in the "algebra-001 for editing" "table_row"
     And I set the following fields to these values:
       | Question name | |
     And I press "id_submitbutton"
@@ -36,6 +37,7 @@ Feature: Test editing an Algebra question
     And I press "id_submitbutton"
     Then I should see "Edited algebra-001 name"
     When I click on "Edit" "link" in the "Edited algebra-001 name" "table_row"
+    And I click on "Edit question" "link" in the "Edited algebra-001 name" "table_row"
     And I press "id_addanswers"
     And I set the following fields to these values:
       | id_answer_1          | 6*x                        |
@@ -43,6 +45,7 @@ Feature: Test editing an Algebra question
       | id_feedback_1        | 3x + 4x gives 7x not 6x.   |
     And I press "id_submitbutton"
     Then I should see "Edited algebra-001 name"
+    When I click on "Edit" "link" in the "Edited algebra-001 name" "table_row"
     When I click on "Preview" "link" in the "Edited algebra-001 name" "table_row"
     And I switch to "questionpreview" window
     Then I should see "P(x) = 3x and Q(x) = 4x. Calculate (P + Q)(x)"

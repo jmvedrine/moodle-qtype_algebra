@@ -26,6 +26,7 @@ Feature: Preview an Algebra question
 
   @javascript @_switch_window
   Scenario: Preview an Algebra question with correct answer
+    When I click on "Edit" "link" in the "algebra-001" "table_row"	       
     When I click on "Preview" "link" in the "algebra-001" "table_row"
     And I switch to "questionpreview" window
     Then I should see "P(x) = 3x and Q(x) = 4x. Calculate (P + Q)(x)"
@@ -42,6 +43,7 @@ Feature: Preview an Algebra question
 
   @javascript @_switch_window
   Scenario: Preview an Algebra question with incorrect answer
+    When I click on "Edit" "link" in the "algebra-001" "table_row"		
     When I click on "Preview" "link" in the "algebra-001" "table_row"
     And I switch to "questionpreview" window
     Then I should see "P(x) = 3x and Q(x) = 4x. Calculate (P + Q)(x)"
