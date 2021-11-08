@@ -40,7 +40,6 @@ class qtype_algebra_renderer extends qtype_renderer {
             $this->page->requires->js_call_amd('qtype_algebra/display', 'init');
         }
 
-
         $question = $qa->get_question();
         $currentanswer = $qa->get_last_qt_var('answer');
         $inputname = $qa->get_qt_field_name('answer');
