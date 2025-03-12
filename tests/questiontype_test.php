@@ -108,14 +108,14 @@ class qtype_algebra_test extends advanced_testcase {
         $actualquestiondata = end($actualquestionsdata);
 
         foreach ($questiondata as $property => $value) {
-            if (!in_array($property, array('id', 'version', 'timemodified', 'timecreated', 'options'))) {
-                $this->assertObjectHasAttribute($property, $actualquestiondata);
+            if (!in_array($property, array('id', 'idnumber', 'version', 'timemodified', 'timecreated', 'options'))) {
+                $this->assertObjectHasProperty($property, $actualquestiondata);
             }
         }
 
         foreach ($questiondata->options as $optionname => $value) {
             if (!in_array($optionname, array('answers', 'variables'))) {
-                $this->assertObjectHasAttribute($optionname, $actualquestiondata->options);
+                $this->assertObjectHasProperty($optionname, $actualquestiondata->options);
             }
         }
 
@@ -124,7 +124,7 @@ class qtype_algebra_test extends advanced_testcase {
             foreach ($answer as $ansproperty => $ansvalue) {
                 // This question does not use 'answerformat', will ignore it.
                 if (!in_array($ansproperty, array('id', 'question', 'answerformat'))) {
-                    $this->assertObjectHasAttribute($ansproperty, $actualanswer);
+                    $this->assertObjectHasProperty($ansproperty, $actualanswer);
                 }
             }
         }
