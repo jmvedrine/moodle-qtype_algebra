@@ -72,9 +72,6 @@ $string['compalgorithm'] = 'Comparison Algorithm';
 $string['compareby_help'] = 'This selects the method by which the students\' responses are compared
 to all the questions answers. The different possibilities are:
 
-SAGE: uses the Open Source <a href="http://www.sagemath.org/">SAGE</a>
-mathematics software to perform a full symbolic algebraic comparison.
-
 Evaluation: This method generates random numbers for
 the question variables and then evaluates both the student response and the
 question\'s answer for that set of values.
@@ -84,7 +81,6 @@ This is the simplest of all the methods. It will only perform the most basic of
 comparisons between expressions.';
 $string['defaultmethod'] = 'Default comparison method';
 $string['compareby'] = 'Comparison Algorithm';
-$string['comparesage'] = 'SAGE';
 $string['compareeval'] = 'Evaluation';
 $string['compareequiv'] = 'Equivalence';
 $string['correctanswers'] = 'Correct answers';
@@ -138,9 +134,6 @@ $string['pluginname_help'] = 'Student enter a formula as response that include o
 $string['pluginname'] = 'Algebra';
 $string['pluginnamesummary'] = 'Student enter a formula that can include one or more variables. Correctness is evaluted using one of 3 differents methods.';
 $string['privacy:metadata'] = 'The Algebra question type plugin does not store any personal data.';
-$string['host'] = 'Host url of SAGE server';
-$string['port'] = 'Port of SAGE server';
-$string['uri'] = 'uri of SAGE server';
 $string['texdelimiters'] = 'Delimiters for TeX expressions';
 $string['dollars'] = '$$...$$';
 $string['brackets'] = '\[...\]';

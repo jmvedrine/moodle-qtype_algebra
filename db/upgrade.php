@@ -122,6 +122,18 @@ function xmldb_qtype_algebra_upgrade($oldversion=0) {
         upgrade_plugin_savepoint(true, 2019042900, 'qtype', 'algebra');
     }
 
+    if ($oldversion < 2025070401) {
+
+        // Remove SAGE evaluation. Migrate to eval.
+        $sql = "UPDATE {qtype_algebra_options} 
+                   SET compareby = 'eval'
+                 WHERE compareby = 'sage'";
+        $DB->execute($sql);
+
+        // Record that qtype_algebra savepoint was reached.
+        upgrade_plugin_savepoint(true, 2025070401, 'qtype', 'algebra');
+    }
+
     return true;
 }
 

@@ -28,7 +28,6 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/question/type/questionbase.php');
 require_once($CFG->dirroot . '/question/type/algebra/questiontype.php');
 require_once($CFG->dirroot . '/question/type/algebra/parser.php');
-require_once($CFG->dirroot . '/question/type/algebra/xmlrpc-utils.php');
 
 /**
  * Represents an algebra question.
@@ -176,10 +175,7 @@ class qtype_algebra_question extends question_graded_by_strategy
         // The type of comparison done depends on the comparision algorithm selected by
         // the question. Use the defined algorithm to select which comparison function
         // to call...
-        if ($this->compareby == 'sage') {
-            // Uses an XML-RPC server with SAGE to perform a full symbollic comparision.
-            return self::test_response_by_sage($expr, $testexpr);
-        } else if ($this->compareby == 'eval') {
+        if ($this->compareby == 'eval') {
             // Tests the response by evaluating it for a certain range of each variable.
             return self::test_response_by_evaluation($expr, $testexpr);
         } else {
@@ -205,44 +201,13 @@ class qtype_algebra_question extends question_graded_by_strategy
         // The type of comparison done depends on the comparision algorithm selected by
         // the question. Use the defined algorithm to select which comparison function
         // to call...
-        if ($this->compareby == 'sage') {
-            // Uses an XML-RPC server with SAGE to perform a full symbollic comparision.
-            return self::test_response_by_sage($expr, $ansexpr);
-        } else if ($this->compareby == 'eval') {
+        if ($this->compareby == 'eval') {
             // Tests the response by evaluating it for a certain range of each variable.
             return self::test_response_by_evaluation($expr, $ansexpr);
         } else {
             // Tests the response by performing a simple parse tree equivalence algorithm.
             return self::test_response_by_equivalence($expr, $ansexpr);
         }
-    }
-
-    /**
-     * Checks whether a response matches a given answer using SAGE
-     *
-     * This method will compare the given response to the given answer using the SAGE
-     * open source algebra computation software. The software is run by a remote
-     * XML-RPC server which is called with both the asnwer and the response and told to
-     * compare the two algebraic expressions.
-     *
-     * @return boolean true if the response matches the answer, false otherwise
-     */
-    public function test_response_by_sage($response, $answer) {
-        global $CFG;
-        $request = array(
-                       'host'   => $CFG->qtype_algebra_host,
-                       'port'   => $CFG->qtype_algebra_port,
-                       'uri'    => $CFG->qtype_algebra_uri,
-        );
-        // Sets the name of the method to call to full_symbolic_compare.
-        $request['method'] = 'full_symbolic_compare';
-        // Get a list of all the variables to declare.
-        $vars = $response->get_variables();
-        $vars = array_merge($vars, array_diff($vars, $answer->get_variables()));
-        // Sets the arguments to the sage string of the response and the list of variables.
-        $request['args'] = array($answer->sage(), $response->sage(), $vars);
-        // Calls the XML-RPC method on the server and returns the response.
-        return xu_rpc_http_concise($request) == 0;
     }
 
     /**

@@ -76,7 +76,7 @@ class qtype_combined_combinable_algebra extends qtype_combined_combinable_text_e
     public function add_form_fragment(moodleform $combinedform, MoodleQuickForm $mform, $repeatenabled) {
         global $CFG;
         $mform->addElement('select', $this->form_field_name('compareby'), get_string('compareby', 'qtype_algebra'),
-                   array( "sage"  => get_string('comparesage', 'qtype_algebra'),
+                   array(
                           "eval"  => get_string('compareeval', 'qtype_algebra'),
                           "equiv" => get_string('compareequiv', 'qtype_algebra')
                          ));

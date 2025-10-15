@@ -898,8 +898,7 @@ class qtype_algebra_parser_multiply extends qtype_algebra_parser_term {
         $this->mformats = array('*' => array('str' => '%s*%s',
                                             'tex' => '%s \\' . get_config('qtype_algebra', 'multiplyoperator') . ' %s'),
                                 '.' => array('str' => '%s %s',
-                                            'tex' => '%s %s',
-                                            'sage' => '%s*%s')
+                                            'tex' => '%s %s',)
                               );
         parent::__construct(self::NARGS, $this->mformats['*'], $text, true);
     }

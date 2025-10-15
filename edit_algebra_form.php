@@ -50,9 +50,9 @@ class qtype_algebra_edit_form extends question_edit_form {
                                                 get_string('algebraoptions', 'qtype_algebra'));
         // Add the select control which will select the comparison type to use.
         $mform->addElement('select', 'compareby', get_string('compareby', 'qtype_algebra'),
-                           array( "sage"  => get_string('comparesage', 'qtype_algebra'),
-                                  "eval"  => get_string('compareeval', 'qtype_algebra'),
-                                  "equiv" => get_string('compareequiv', 'qtype_algebra')
+                           array(
+                                   "eval"  => get_string('compareeval', 'qtype_algebra'),
+                                   "equiv" => get_string('compareequiv', 'qtype_algebra')
                                  ));
         $mform->addHelpButton('compareby', 'compareby', 'qtype_algebra');
         $mform->setDefault('compareby', $CFG->qtype_algebra_method);
