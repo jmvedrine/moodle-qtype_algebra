@@ -124,11 +124,30 @@ function xmldb_qtype_algebra_upgrade($oldversion=0) {
 
     if ($oldversion < 2025070401) {
 
-        // Remove SAGE evaluation. Migrate to eval.
-        $sql = "UPDATE {qtype_algebra_options} 
-                   SET compareby = 'eval'
+        // Get all records from qtype_algebra_options table where compareby is set to 'sage'.
+        $sql = "SELECT * 
+                  FROM {qtype_algebra_options}
                  WHERE compareby = 'sage'";
-        $DB->execute($sql);
+
+        $records = $DB->get_records_sql($sql);
+        // Migration to new compareby field, requires a range for variables to be specified.
+        // Set default range to 1, 11 for all variables, which might be the most common case.
+        foreach ($records as $record) {
+            $vars = $DB->get_records('qtype_algebra_variables', ['questionid' => $record->questionid]);
+            foreach ($vars as $var) {
+                // If min and max are already set then skip this variable.
+                if (!empty($var->min) && !empty($var->max)) {
+                    continue;
+                }
+                // Set min to be 1 if it is not set.
+                $var->min = (!empty($var->min)) ? $var->min : 1;
+                // Set max to be at least 9 greater than min.
+                $var->max = (!empty($var->max)) ? max($var->max, $var->min + 9) : $var->min + 9;
+                $DB->update_record('qtype_algebra_variables', $var);
+            }
+            $record->compareby = 'eval';
+            $DB->update_record('qtype_algebra_options', $record);
+        }
 
         // Record that qtype_algebra savepoint was reached.
         upgrade_plugin_savepoint(true, 2025070401, 'qtype', 'algebra');
