@@ -140,8 +140,15 @@ class qtype_algebra_renderer extends qtype_renderer {
                 )
             );
 
-            $display = $question->format_text($question->formated_expression($currentanswer, $vars),
-                                    FORMAT_MOODLE , $qa, 'question', 'questiontext', $question->id);
+            $display = $question->format_text(
+                $question->formated_expression($currentanswer, $vars),
+                FORMAT_MOODLE,
+                $qa,
+                'question',
+                'questiontext',
+                $question->id,
+                true
+            );
             $result .= html_writer::tag('div', $display , array(
                 'type' => 'text',
                 'name' => $nameprefix . '_display',
@@ -175,7 +182,6 @@ class qtype_algebra_renderer extends qtype_renderer {
         }
         $formatoptions = new stdClass;
         $formatoptions->para = false;
-        $formatoptions->clean = false;
         $formattedanswer = format_text($question->formated_expression($answer->answer), FORMAT_MOODLE, $formatoptions);
         return get_string('correctansweris', 'qtype_algebra', s($answer->answer)).  $formattedanswer;
     }
