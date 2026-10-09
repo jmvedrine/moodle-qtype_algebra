@@ -27,21 +27,15 @@ require_once(__DIR__ . '/parser.php');
 
 $p = new qtype_algebra_parser;
 
+// This should be accessed by only valid logged in user.
+require_login(null, false);
+require_sesskey();
+
 $vars  = required_param('vars', PARAM_RAW);
 $expr  = required_param('expr', PARAM_RAW);
 
-// This should be accessed by only valid logged in user.
-require_login(null, false);
-
-/*
-if (!confirm_sesskey()) {
-    header('HTTP/1.1 403 Forbidden');
-    die();
-}
-*/
-
 try {
-    $vars = explode(',', $vars);
+    $vars = array_filter(clean_param_array(array_map('trim', explode(',', $vars)), PARAM_ALPHANUMEXT));
     if (empty($expr)) {
         $texexp = ' ';
     } else {

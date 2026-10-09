@@ -37,17 +37,13 @@ $p = new qtype_algebra_parser;
 $validanswer = true;
 
 try {
-    $query = urldecode($_SERVER['QUERY_STRING']);
-    $m = array();
-
-    if (!preg_match('/vars=([^&]*)&expr=(.*)$/A', $query, $m)) {
-        throw new Exception('Invalid query string received from http server!');
-    }
-    $vars = explode(',', $m[1]);
-    if (empty($m[2])) {
+    $vars = required_param('vars', PARAM_RAW);
+    $expr = required_param('expr', PARAM_RAW);
+    $vars = array_filter(clean_param_array(array_map('trim', explode(',', $vars)), PARAM_ALPHANUMEXT));
+    if (empty($expr)) {
         $texexp = '';
     } else {
-        $exp = $p->parse($m[2], $vars);
+        $exp = $p->parse($expr, $vars);
         $texexp = $exp->tex();
         switch($CFG->qtype_algebra_texdelimiters) {
             case 'old':
