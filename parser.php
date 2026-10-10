@@ -1498,8 +1498,11 @@ class qtype_algebra_parser {
             // a variable 'x' before 'x1'. Do this using a helper function, which will compare two
             // strings using their length only, and use this with the usort function.
             usort($variables, 'qtype_algebra_parser_strlen_sort');
+            $quoted = array_map(function ($v) {
+                return preg_quote($v, '/');
+            }, $variables);
             // Generate a single regular expression which will match both all known variables.
-            $revar = '/('.implode('|', $variables).')/A';
+            $revar = '/('.implode('|', $quoted).')/A';
         } else {
             $revar = '';
         }
