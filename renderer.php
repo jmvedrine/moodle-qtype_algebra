@@ -114,7 +114,8 @@ class qtype_algebra_renderer extends qtype_renderer {
             // Name of the javascript function which causes the entered formula to be rendered.
             $dfname = $nameprefix.'_display';
             $displayfunction = 'function '.$dfname."() {\n".
-            '    var text="vars='.$varnames.'&expr="+escape(document.getElementsByName("'.$inputname.'")[0].value);'."\n".
+            '    var text="vars="+'.json_encode($varnames, JSON_HEX_TAG).
+            '+"&expr="+escape(document.getElementsByName("'.$inputname.'")[0].value);'."\n".
             "    if(text.length != 0) {\n".
             '      document.getElementsByName("'.$iframename.'")[0].src="'.
             $CFG->wwwroot.'/question/type/algebra/displayformula.php?"+'.
@@ -131,7 +132,7 @@ class qtype_algebra_renderer extends qtype_renderer {
             $result .= html_writer::tag('script', $dfname.'();', array('type' => 'text/javascript'));
             $result .= html_writer::end_tag('div');
         } else {
-            $result .= html_writer::tag('div', $varnames , array(
+            $result .= html_writer::tag('div', s($varnames), array(
                 'type' => 'text',
                 'name' => $nameprefix . '_vars',
                 'id' => $nameprefix . '_vars',
