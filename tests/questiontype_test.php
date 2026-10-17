@@ -163,4 +163,62 @@ class qtype_algebra_test extends advanced_testcase {
             'tolerance', 'allowedfuncs', 'disallow', 'answerprefix');
         $this->assertEquals($this->qtype->extra_question_fields(), $extraquestionfields);
     }
+
+    /**
+     * Export the given question to Moodle XML and import the file again.
+     *
+     * @param \stdClass $questiondata the question to export
+     * @return \stdClass the imported question
+     */
+    private function export_and_import(\stdClass $questiondata): \stdClass {
+        global $CFG;
+        require_once($CFG->dirroot . '/question/format/xml/format.php');
+        $questiondata->contextid = \context_system::instance()->id;
+        $xml = '<quiz>' . (new \qformat_xml())->writequestion($questiondata) . '</quiz>';
+        $questions = (new \qformat_xml())->readquestions([$xml]);
+        $this->assertCount(1, $questions);
+        return reset($questions);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Group('baseline')]
+    /**
+     * Crafted option and variable values cannot add elements to the exported XML.
+     *
+     * @covers \qtype_algebra::export_to_xml
+     */
+    public function test_export_to_xml_escapes_values(): void {
+        $questiondata = $this->get_test_question_data();
+        $compareby = 'equiv</compareby><nchecks>1</nchecks><compareby>eval';
+        $name = 'x" extra="1';
+        $payload = '1</min><max>1</max></variable><variable name="z"><min>1';
+        $questiondata->options->compareby = $compareby;
+        $questiondata->options->variables[7]->name = $name;
+        $questiondata->options->variables[7]->min = $payload;
+
+        $qo = $this->export_and_import($questiondata);
+
+        $this->assertEquals($compareby, $qo->compareby);
+        $this->assertEquals('10', $qo->nchecks);
+        $this->assertEquals([$name], $qo->variable);
+        $this->assertEquals([$payload], $qo->varmin);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Group('baseline')]
+    /**
+     * Regular questions still export and import with unchanged values.
+     *
+     * @covers \qtype_algebra::export_to_xml
+     */
+    public function test_export_to_xml_round_trip(): void {
+        $questiondata = $this->get_test_question_data();
+        $questiondata->options->allowedfuncs = ['sin', 'cos'];
+
+        $qo = $this->export_and_import($questiondata);
+
+        $this->assertEquals('eval', $qo->compareby);
+        $this->assertEquals(['sin' => 0, 'cos' => 1], $qo->allowedfuncs);
+        $this->assertEquals(['x'], $qo->variable);
+        $this->assertEquals([-5], $qo->varmin);
+        $this->assertEquals([5], $qo->varmax);
+    }
 }

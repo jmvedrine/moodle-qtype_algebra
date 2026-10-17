@@ -319,11 +319,11 @@ class qtype_algebra extends question_type {
     public function export_to_xml($question, qformat_xml $format, $extra = null) {
         $expout = '';
         // Create a text string of the allowed functions from the array.
-        $allowedfuncs = implode(',', $question->options->allowedfuncs);
+        $allowedfuncs = s(implode(',', $question->options->allowedfuncs));
         // Write out all the extra fields belonging to the algebra question type.
-        $expout .= "    <compareby>{$question->options->compareby}</compareby>\n";
-        $expout .= "    <tolerance>{$question->options->tolerance}</tolerance>\n";
-        $expout .= "    <nchecks>{$question->options->nchecks}</nchecks>\n";
+        $expout .= "    <compareby>" . s($question->options->compareby) . "</compareby>\n";
+        $expout .= "    <tolerance>" . s($question->options->tolerance) . "</tolerance>\n";
+        $expout .= "    <nchecks>" . s($question->options->nchecks) . "</nchecks>\n";
         $expout .= "    <disallow>".$format->writetext($question->options->disallow, 1, true)."</disallow>\n";
         $expout .= "    <allowedfuncs>$allowedfuncs</allowedfuncs>\n";
         $expout .= "    <answerprefix>".$format->writetext($question->options->answerprefix, 1, true).
@@ -332,9 +332,9 @@ class qtype_algebra extends question_type {
         $expout .= $format->write_answers($question->options->answers);
         // Loop over all the variables for the question and write out all their details.
         foreach ($question->options->variables as $var) {
-            $expout .= "<variable name=\"{$var->name}\">\n";
-            $expout .= "    <min>{$var->min}</min>\n";
-            $expout .= "    <max>{$var->max}</max>\n";
+            $expout .= "<variable name=\"" . s($var->name) . "\">\n";
+            $expout .= "    <min>" . s($var->min) . "</min>\n";
+            $expout .= "    <max>" . s($var->max) . "</max>\n";
             $expout .= "</variable>\n";
         }
         return $expout;
